@@ -17,6 +17,7 @@
     "express": "^4.16.2",
     "moment": "^2.19.2",
     "mongoose": "^4.13.5",
+    "on-finished": "^2.3.0",
     "util": "^0.10.3"
   },
   "devDependencies": {
