@@ -1,5 +1,7 @@
 const router = require('express').Router();
 const assetsController = require('./../controllers/assetsController');
+const roomsController = require('./../controllers/roomsController');
+
 /**
  * Assets routes
  */
@@ -20,9 +22,9 @@ router.get('/assets', assetsController.getAssets);
 // /**
 //  * Rooms routes
 //  */
-// router.get('/rooms');
-// router.get('/rooms/:roomId');
-// router.post('/rooms');
+router.get('/rooms', roomsController.getRooms);
+router.get('/rooms/:roomId', roomsController.getRoom);
+router.post('/rooms', roomsController.createRoom);
 
 // /**
 //  * Users routes
