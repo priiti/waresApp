@@ -9,17 +9,20 @@ exports.getRooms = async (req, res) => {
   }
 };
 
-exports.getRoom = async (req, res) => {
+exports.getRoomById = async (req, res) => {
   try {
     const { roomId } = req.params;
     const room = await Room.findById(roomId);
+    if (!room) {
+      throw new Error('No room found!');
+    }
     res.send(room);
   } catch (error) {
     console.log(error);
   }
 };
 
-exports.createRoom = async (req, res) => {
+exports.createNewRoom = async (req, res) => {
   try {
     const { name, description } = req.body;
     if (!name || !description) {
