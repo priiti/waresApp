@@ -4,6 +4,8 @@ const assetsController = require('./../controllers/assetsController');
  * Assets routes
  */
 router.get('/assets', assetsController.getAssets);
+router.get('/assets/:assetId', assetsController.getAssetById);
+router.post('/assets', assetsController.createNewAsset);
 /**
  * Categories routes
  */

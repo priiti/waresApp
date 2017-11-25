@@ -1,4 +1,10 @@
 require('dotenv').config({ path: '.env' });
+
+require('./models/Room');
+require('./models/User');
+require('./models/DeviceStatus');
+require('./models/DeviceType');
+
 const app = require('./app');
 const db = require('./db');
 
