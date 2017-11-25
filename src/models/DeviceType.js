@@ -7,6 +7,13 @@ const deviceTypeSchema = new mongoose.Schema({
   },
   description: {
     type: String
+  },
+  createdDate: {
+    type: Date,
+    default: Date.now
+  },
+  updatedDate: {
+    type: Date
   }
 }, {
   collection: 'deviceType'

@@ -26,6 +26,13 @@ const userSchema = new mongoose.Schema({
       type: String,
       required: true
     }
+  },
+  createdDate: {
+    type: Date,
+    default: Date.now
+  },
+  updatedDate: {
+    type: Date
   }
 }, {
   collection: 'users'
