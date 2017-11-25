@@ -6,6 +6,8 @@ const roomsController = require('./../controllers/roomsController');
  * Assets routes
  */
 router.get('/assets', assetsController.getAssets);
+router.get('/assets/:assetId', assetsController.getAssetById);
+router.post('/assets', assetsController.createNewAsset);
 /**
  * Categories routes
  */

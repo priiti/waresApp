@@ -18,5 +18,17 @@ const assetSchema = new mongoose.Schema({
   }
 });
 
+function autoPopulate(next) {
+  this
+    .populate('device')
+    .populate('room')
+    .populate('user', '_id firstName lastName login.email profileImage phoneNumber');
+
+  next();
+}
+
+assetSchema.pre('find', autoPopulate);
+assetSchema.pre('findOne', autoPopulate);
+
 const Asset = mongoose.model('Asset', assetSchema);
 module.exports = Asset;

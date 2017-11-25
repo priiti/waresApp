@@ -33,5 +33,15 @@ const deviceSchema = new mongoose.Schema({
   collection: 'devices'
 });
 
+function autoPopulate(next) {
+  this
+    .populate('deviceStatus')
+    .populate('deviceType');
+
+  next();
+}
+
+deviceSchema.pre('find', autoPopulate);
+
 const Device = mongoose.model('Device', deviceSchema);
 module.exports = Device;
