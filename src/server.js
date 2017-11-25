@@ -8,13 +8,20 @@ require('./models/DeviceType');
 const app = require('./app');
 const db = require('./db');
 
-const server = app.listen(app.get('port'), () => {
-  console.log(`Server running on ${server.address().port}`);
+(async () => {
+  try {
+    const server = app.listen(app.get('port'), () => {
+      console.log(`Server running on ${server.address().port}`);
+    });
 
-  process.on('SIGINT', () => {
-    db.connection.close(() => {
-      console.log('Database connection terminated!');
+    process.on('SIGNINT', () => {
+      db.connection.close(() => {
+        console.log('Database connection terminated!');
+      });
+
       process.exit(0);
     });
-  });
-});
+  } catch (error) {
+    console.error(error);
+  }
+})();
