@@ -27,8 +27,8 @@ router.post('/assets', assetsController.createNewAsset);
 //  * Rooms routes
 //  */
 router.get('/rooms', roomsController.getRooms);
-router.get('/rooms/:roomId', roomsController.getRoom);
-router.post('/rooms', roomsController.createRoom);
+router.get('/rooms/:roomId', roomsController.getRoomById);
+router.post('/rooms', roomsController.createNewRoom);
 
 // /**
 //  * Device statuses routes
