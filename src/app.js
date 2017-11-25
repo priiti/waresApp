@@ -1,8 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const morgan = require('morgan');
 const routes = require('./routes/routes');
 
 const app = express();
+const isTestEnvironment = process.env.NODE_ENV === 'test';
+
+if (!isTestEnvironment) {
+  app.use(morgan('dev'));
+}
 
 app.set('port', process.env.APP_PORT || 8092);
 

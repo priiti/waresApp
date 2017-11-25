@@ -4,8 +4,8 @@
   "description": "Wares- Varade registrisüsteem",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "NODE_ENV=development nodemon ./src/server.js",
+    "test": "NODE_ENV=test"
   },
   "author": "Banana",
   "license": "MIT",
@@ -18,6 +18,7 @@
     "moment": "^2.19.2",
     "mongodb": "^2.2.33",
     "mongoose": "^4.13.5",
+    "morgan": "^1.9.0",
     "on-finished": "^2.3.0",
     "util": "^0.10.3"
   },
