@@ -28,6 +28,13 @@ const deviceSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'DeviceStatus',
     required: true
+  },
+  createdDate: {
+    type: Date,
+    default: Date.now
+  },
+  updatedDate: {
+    type: Date
   }
 }, {
   collection: 'devices'

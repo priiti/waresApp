@@ -5,7 +5,16 @@ const deviceStatusSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  description: String
+  description: {
+    type: String
+  },
+  createdDate: {
+    type: Date,
+    default: Date.now
+  },
+  updatedDate: {
+    type: Date
+  }
 }, {
   collection: 'deviceStatus'
 });

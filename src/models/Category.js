@@ -13,6 +13,13 @@ const categorySchema = new mongoose.Schema({
     default: 0,
     type: Number,
     required: true
+  },
+  createdDate: {
+    type: Date,
+    default: Date.now
+  },
+  updatedDate: {
+    type: Date
   }
 });
 
