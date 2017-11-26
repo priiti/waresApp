@@ -1,28 +1,29 @@
 const DeviceStatus = require('./../models/DeviceStatus');
 
-exports.getDeviceStatuses = async (req, res) => {
+exports.getDeviceStatuses = async (req, res, next) => {
   try {
     const deviceStatuses = await DeviceStatus.find({});
     res.send(deviceStatuses);
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    next(err);
   }
 };
 
-exports.getDeviceStatusById = async (req, res) => {
+exports.getDeviceStatusById = async (req, res, next) => {
   try {
     const { statusId } = req.params;
     const deviceStatus = await DeviceStatus.findById(statusId);
+
     if (!deviceStatus) {
       throw new Error('No device status found!');
     }
     res.send(deviceStatus);
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    next(err);
   }
 };
 
-exports.createNewDeviceStatus = async (req, res) => {
+exports.createNewDeviceStatus = async (req, res, next) => {
   try {
     const { name, description } = req.body;
     if (!name) {
@@ -36,9 +37,9 @@ exports.createNewDeviceStatus = async (req, res) => {
 
     const newDeviceStatus = new DeviceStatus({ name, description });
     await newDeviceStatus.save();
+
     res.status(200).send(newDeviceStatus);
-  } catch (error) {
-    console.error(error);
-    res.status(400).send(error.message);
+  } catch (err) {
+    next(err);
   }
 };

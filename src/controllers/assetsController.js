@@ -4,17 +4,17 @@ const { ObjectId } = require('mongodb');
 
 const validateMongoObjectId = objectId => !!ObjectId.isValid(objectId);
 
-exports.getAssets = async (req, res) => {
+exports.getAssets = async (req, res, next) => {
   try {
     const assets = await Asset.find({});
 
     res.send(assets);
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    next(err);
   }
 };
 
-exports.getAssetById = async (req, res) => {
+exports.getAssetById = async (req, res, next) => {
   try {
     const { assetId } = req.params;
 
@@ -29,11 +29,11 @@ exports.getAssetById = async (req, res) => {
 
     res.send(asset);
   } catch (err) {
-    res.status(500).send(err);
+    next(err);
   }
 };
 
-exports.createNewAsset = async (req, res) => {
+exports.createNewAsset = async (req, res, next) => {
   try {
     const {
       name,
@@ -69,6 +69,6 @@ exports.createNewAsset = async (req, res) => {
       newAsset
     });
   } catch (err) {
-    res.status(500).send(err);
+    next(err);
   }
 };
