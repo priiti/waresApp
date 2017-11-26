@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const validator = require('./../utils/validator');
 const assetsController = require('./../controllers/assetsController');
 const roomsController = require('./../controllers/roomsController');
 const devicesStatusesController = require('./../controllers/deviceStatusesController');
@@ -9,7 +10,7 @@ const devicesTypesController = require('./../controllers/deviceTypesController')
  */
 router.get('/assets', assetsController.getAssets);
 router.get('/assets/:assetId', assetsController.getAssetById);
-router.post('/assets', assetsController.createNewAsset);
+router.post('/assets', validator.createAssetValidation, assetsController.createNewAsset);
 /**
  * Categories routes
  */
@@ -28,7 +29,7 @@ router.post('/assets', assetsController.createNewAsset);
 //  */
 router.get('/rooms', roomsController.getRooms);
 router.get('/rooms/:roomId', roomsController.getRoomById);
-router.post('/rooms', roomsController.createNewRoom);
+router.post('/rooms', validator.createRoomValidation, roomsController.createNewRoom);
 
 // /**
 //  * Device statuses routes
