@@ -14,7 +14,8 @@ const deviceSchema = new mongoose.Schema({
     required: true
   },
   serialNumber: {
-    type: String
+    type: String,
+    unique: true
   },
   deviceImage: {
     type: String
