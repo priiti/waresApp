@@ -6,7 +6,7 @@ const validateMongoObjectId = objectId => !!ObjectId.isValid(objectId);
 
 exports.getAssets = async (req, res, next) => {
   try {
-    const assets = await Asset.find({});
+    const assets = await Asset.getAllAssetsData();
 
     res.send(assets);
   } catch (err) {

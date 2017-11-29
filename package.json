@@ -4,7 +4,7 @@
   "description": "Wares- Varade registrisüsteem",
   "main": "index.js",
   "scripts": {
-    "dev": "NODE_ENV=development nodemon ./src/server.js",
+    "dev": "export NODE_ENV=development || SET NODE_ENV=development && nodemon ./src/server.js",
     "test": "NODE_ENV=test"
   },
   "author": "Banana",
