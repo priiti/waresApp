@@ -1,6 +1,6 @@
 const Asset = require('./../models/Asset');
 const Device = require('./../models/Device');
-const { isMongoObjectId } = require('./../utils/validator');
+const { isMongoObjectId, hasInvalidObjectId } = require('./../utils/validator');
 
 exports.getAssets = async (req, res, next) => {
   try {
@@ -38,25 +38,29 @@ exports.createNewAsset = async (req, res, next) => {
       description,
       inventoryId,
       serialNumber,
-      deviceType,
-      deviceStatus,
-      room,
-      user
+      deviceTypeId,
+      deviceStatusId,
+      roomId,
+      userId
     } = req.body;
+
+    if (hasInvalidObjectId([inventoryId, deviceTypeId, deviceStatusId, roomId, userId])) {
+      throw new Error('Errors in form. Please check for fields!');
+    }
 
     const device = new Device({
       name,
       description,
       inventoryId,
       serialNumber,
-      deviceType,
-      deviceStatus
+      deviceType: deviceTypeId,
+      deviceStatus: deviceStatusId
     });
 
     const asset = new Asset({
       device: device._id,
-      room,
-      user
+      room: roomId,
+      user: userId
     });
 
     const newDevice = await device.save();

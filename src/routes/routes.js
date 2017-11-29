@@ -10,7 +10,7 @@ const devicesTypesController = require('./../controllers/deviceTypesController')
  */
 router.get('/assets', assetsController.getAssets);
 router.get('/assets/:assetId', assetsController.getAssetById);
-router.post('/assets', validator.createAssetValidation, assetsController.createNewAsset);
+router.post('/assets', validator.assetValidation, assetsController.createNewAsset);
 /**
  * Categories routes
  */

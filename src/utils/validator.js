@@ -3,6 +3,15 @@ const { UnprocessableEntityError } = require('./errorHandlers');
 const { ObjectId } = require('mongodb');
 
 exports.isMongoObjectId = objectId => !!ObjectId.isValid(objectId);
+exports.hasInvalidObjectId = (objectIdList) => {
+  let hasErrors = false;
+  objectIdList.forEach((id) => {
+    if (!ObjectId.isValid(id)) {
+      hasErrors = true;
+    }
+  });
+  return hasErrors;
+};
 
 const errorCheck = (req, res, next) => {
   const errors = validationResult(req);
@@ -13,14 +22,15 @@ const errorCheck = (req, res, next) => {
   return next();
 };
 
-exports.createAssetValidation = [
+exports.assetValidation = [
   body('inventoryId').exists().isLength({ min: 1 }).withMessage('Please provide inventory id number!'),
   body('serialNumber').exists().isLength({ min: 1 }).withMessage('Please provide correct serial number!'),
-  body('deviceType').exists().isLength({ min: 1 }).withMessage('Please select correct device type!'),
-  body('deviceStatus').exists().isLength({ min: 1 }).withMessage('Please select correct device status!'),
+  body('deviceTypeId').exists().isLength({ min: 1 }).withMessage('Please select correct device type!'),
+  body('deviceStatusId').exists().isLength({ min: 1 }).withMessage('Please select correct device status!'),
   body('description').exists().isLength({ min: 1 }).withMessage('Please provide description!'),
-  body('name').exists().isLength({ min: 1 }).withMessage('Please provide device name!'),
-  body('user').exists().isLength({ min: 1 }).withMessage('Please select correct user!'),
+  body('deviceName').exists().isLength({ min: 1 }).withMessage('Please provide device name!'),
+  body('userId').exists().isLength({ min: 1 }).withMessage('Please provide correct user!'),
+  body('roomId').exists().isLength({ min: 1 }).withMessage('Please provide correct room!'),
   errorCheck
 ];
 
