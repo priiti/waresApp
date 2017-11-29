@@ -1,8 +1,6 @@
 const Asset = require('./../models/Asset');
 const Device = require('./../models/Device');
-const { ObjectId } = require('mongodb');
-
-const validateMongoObjectId = objectId => !!ObjectId.isValid(objectId);
+const { isMongoObjectId } = require('./../utils/validator');
 
 exports.getAssets = async (req, res, next) => {
   try {
@@ -18,7 +16,7 @@ exports.getAssetById = async (req, res, next) => {
   try {
     const { assetId } = req.params;
 
-    if (!validateMongoObjectId(assetId)) {
+    if (!isMongoObjectId(assetId)) {
       throw new Error('Asset not found!');
     }
 
