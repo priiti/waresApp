@@ -92,8 +92,13 @@ assetSchema.statics.getAllAssetsData = function () {
         userInfo: {
           deviceUserFullName:
             { $concat: ['$$ROOT.userInfo.firstName', ' ', '$$ROOT.userInfo.lastName'] }
-        }
+        },
+        createdDate: '$$ROOT.createdDate',
+        updatedDate: '$$ROOT.updatedDate'
       }
+    },
+    {
+      $sort: { createdDate: -1 }
     }
   ]);
 };
