@@ -21,4 +21,4 @@ mongoose.connection.on('error', (err) => {
   }
 });
 
-module.exports = mongoose;
+module.exports = mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true });
