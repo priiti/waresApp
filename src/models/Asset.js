@@ -25,17 +25,78 @@ const assetSchema = new mongoose.Schema({
   }
 });
 
-function autoPopulate(next) {
-  this
-    .populate('device')
-    .populate('room')
-    .populate('user', '_id firstName lastName login.email profileImage phoneNumber');
-
-  next();
-}
-
-assetSchema.pre('find', autoPopulate);
-assetSchema.pre('findOne', autoPopulate);
+assetSchema.statics.getAllAssetsData = function () {
+  return this.aggregate([
+    {
+      $lookup: {
+        from: 'devices',
+        localField: 'device',
+        foreignField: '_id',
+        as: 'deviceInfo'
+      }
+    }, {
+      $unwind: '$deviceInfo'
+    },
+    {
+      $lookup: {
+        from: 'deviceStatus',
+        localField: 'deviceInfo.deviceStatus',
+        foreignField: '_id',
+        as: 'deviceStatus'
+      }
+    },
+    {
+      $unwind: '$deviceStatus'
+    },
+    {
+      $lookup: {
+        from: 'deviceType',
+        localField: 'deviceInfo.deviceType',
+        foreignField: '_id',
+        as: 'deviceType'
+      }
+    }, {
+      $unwind: '$deviceType'
+    },
+    {
+      $lookup: {
+        from: 'rooms',
+        localField: 'room',
+        foreignField: '_id',
+        as: 'roomInfo'
+      }
+    }, {
+      $unwind: '$roomInfo'
+    },
+    {
+      $lookup: {
+        from: 'users',
+        localField: 'user',
+        foreignField: '_id',
+        as: 'userInfo'
+      }
+    }, {
+      $unwind: '$userInfo'
+    },
+    {
+      $project: {
+        deviceInfo: {
+          deviceName: '$$ROOT.deviceInfo.name',
+          inventoryId: '$$ROOT.deviceInfo.inventoryId',
+          deviceStatus: '$$ROOT.deviceStatus.name',
+          deviceType: '$$ROOT.deviceType.name'
+        },
+        roomInfo: {
+          roomName: '$$ROOT.roomInfo.name'
+        },
+        userInfo: {
+          deviceUserFullName:
+            { $concat: ['$$ROOT.userInfo.firstName', ' ', '$$ROOT.userInfo.lastName'] }
+        }
+      }
+    }
+  ]);
+};
 
 const Asset = mongoose.model('Asset', assetSchema);
 module.exports = Asset;

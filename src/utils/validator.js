@@ -1,5 +1,8 @@
 const { body, validationResult } = require('express-validator/check');
 const { UnprocessableEntityError } = require('./errorHandlers');
+const { ObjectId } = require('mongodb');
+
+exports.isMongoObjectId = objectId => !!ObjectId.isValid(objectId);
 
 const errorCheck = (req, res, next) => {
   const errors = validationResult(req);
