@@ -1,4 +1,4 @@
-/* globals describe, it, before, expect */
+/* globals describe, it, before */
 const expect = require('expect');
 const DeviceType = require('./../../src/models/DeviceType');
 
