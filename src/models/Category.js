@@ -14,12 +14,16 @@ const categorySchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  createdDate: {
+  createdAt: {
     type: Date,
     default: Date.now
   },
-  updatedDate: {
+  updatedAt: {
     type: Date
+  },
+  deletedAt: {
+    type: Date,
+    default: null
   }
 });
 

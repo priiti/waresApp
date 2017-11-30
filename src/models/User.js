@@ -28,12 +28,16 @@ const userSchema = new mongoose.Schema({
       required: true
     }
   },
-  createdDate: {
+  createdAt: {
     type: Date,
     default: Date.now
   },
-  updatedDate: {
+  updatedAt: {
     type: Date
+  },
+  deletedAt: {
+    type: Date,
+    default: null
   }
 }, {
   collection: 'users'
