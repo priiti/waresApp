@@ -1,4 +1,5 @@
 const DeviceType = require('./../models/DeviceType');
+const { Error } = require('./../utils/errorHandlers');
 
 exports.getDeviceTypes = async (req, res, next) => {
   try {

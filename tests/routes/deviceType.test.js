@@ -27,10 +27,15 @@ module.exports = (request) => {
       request
         .post('/api/devices/types')
         .send(newType)
-        .expect(500)
-        .expect((res) => {
-        })
-        .end(done);
+        .expect(400)
+        .end((err, res) => {
+          if (err) { return done(err); }
+          DeviceType.find({})
+            .then((types) => {
+              expect(types.length).toBe(1);
+              done();
+            });
+        });
     });
   });
 
