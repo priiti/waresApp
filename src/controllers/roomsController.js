@@ -3,7 +3,7 @@ const Room = require('./../models/Room');
 exports.getRooms = async (req, res, next) => {
   try {
     const rooms = await Room.find({});
-    res.send(rooms);
+    res.status(200).json({ rooms });
   } catch (err) {
     next(err);
   }
@@ -16,7 +16,7 @@ exports.getRoomById = async (req, res, next) => {
     if (!room) {
       throw new Error('No room found!');
     }
-    res.send(room);
+    res.status(200).json({ room });
   } catch (err) {
     next(err);
   }
@@ -36,7 +36,7 @@ exports.createNewRoom = async (req, res, next) => {
 
     const newRoom = new Room({ name, description });
     await newRoom.save();
-    res.status(200).send(newRoom);
+    res.status(201).json({ newRoom });
   } catch (err) {
     next(err);
   }

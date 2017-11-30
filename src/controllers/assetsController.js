@@ -6,7 +6,7 @@ exports.getAssets = async (req, res, next) => {
   try {
     const assets = await Asset.getAllAssetsData();
 
-    res.send(assets);
+    res.status(200).json({ assets });
   } catch (err) {
     next(err);
   }
@@ -25,7 +25,7 @@ exports.getAssetById = async (req, res, next) => {
       throw new Error('Asset not found!');
     }
 
-    res.send(asset);
+    res.status(200).json({ asset });
   } catch (err) {
     next(err);
   }

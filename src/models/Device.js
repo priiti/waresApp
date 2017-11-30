@@ -30,12 +30,16 @@ const deviceSchema = new mongoose.Schema({
     ref: 'DeviceStatus',
     required: true
   },
-  createdDate: {
+  createdAt: {
     type: Date,
     default: Date.now
   },
-  updatedDate: {
+  updatedAt: {
     type: Date
+  },
+  deletedAt: {
+    type: Date,
+    default: null
   }
 }, {
   collection: 'devices'

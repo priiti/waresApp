@@ -17,7 +17,6 @@ exports.getDeviceTypeById = async (req, res, next) => {
     if (!deviceType) {
       throw new Error('No device type found!');
     }
-
     res.status(200).json({ deviceType });
   } catch (err) {
     next(err);
@@ -38,8 +37,8 @@ exports.createNewDeviceType = async (req, res, next) => {
 
     const newDeviceType = new DeviceType({ name, description });
     await newDeviceType.save();
-
-    res.status(201).json({ newDeviceType });
+    
+    res.status(201).json({ deviceType });
   } catch (err) {
     next(err);
   }

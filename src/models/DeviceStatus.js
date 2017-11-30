@@ -9,12 +9,16 @@ const deviceStatusSchema = new mongoose.Schema({
   description: {
     type: String
   },
-  createdDate: {
+  createdAt: {
     type: Date,
     default: Date.now
   },
-  updatedDate: {
+  updatedAt: {
     type: Date
+  },
+  deletedAt: {
+    type: Date,
+    default: null
   }
 }, {
   collection: 'deviceStatus'
