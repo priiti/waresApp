@@ -37,8 +37,8 @@ exports.createNewDeviceType = async (req, res, next) => {
 
     const newDeviceType = new DeviceType({ name, description });
     await newDeviceType.save();
-    
-    res.status(201).json({ deviceType });
+
+    res.status(201).json({ newDeviceType });
   } catch (err) {
     next(err);
   }

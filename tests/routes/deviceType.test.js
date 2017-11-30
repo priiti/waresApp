@@ -35,6 +35,7 @@ module.exports = (request) => {
               expect(types.length).toBe(1);
               done();
             });
+          return null;
         });
     });
   });
