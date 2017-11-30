@@ -7,18 +7,18 @@ require('./models/DeviceType');
 
 const logger = require('./utils/logger');
 const app = require('./app');
-const mongoose = require('./db');
+const db = require('./db');
 
 (async () => {
   try {
-    await mongoose;
+    await db;
 
     const server = app.listen(app.get('port'), () => {
       logger.info(`Server running on ${server.address().port}`);
     });
 
     process.on('SIGNINT', () => {
-      mongoose.connection.close(() => {
+      db.connection.close(() => {
         logger.error('Database connection terminated!');
       });
 
@@ -28,3 +28,5 @@ const mongoose = require('./db');
     logger.error(error);
   }
 })();
+
+module.exports = app;

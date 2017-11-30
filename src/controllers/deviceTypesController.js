@@ -3,7 +3,7 @@ const DeviceType = require('./../models/DeviceType');
 exports.getDeviceTypes = async (req, res, next) => {
   try {
     const deviceTypes = await DeviceType.find({});
-    res.send(deviceTypes);
+    res.status(200).json({ deviceTypes });
   } catch (err) {
     next(err);
   }
@@ -16,7 +16,8 @@ exports.getDeviceTypeById = async (req, res, next) => {
     if (!deviceType) {
       throw new Error('No device type found!');
     }
-    res.send(deviceType);
+
+    res.status(200).json({ deviceType });
   } catch (err) {
     next(err);
   }
@@ -36,7 +37,8 @@ exports.createNewDeviceType = async (req, res, next) => {
 
     const newDeviceType = new DeviceType({ name, description });
     await newDeviceType.save();
-    res.status(200).send(newDeviceType);
+
+    res.status(201).json({ newDeviceType });
   } catch (err) {
     next(err);
   }

@@ -66,10 +66,7 @@ exports.createNewAsset = async (req, res, next) => {
     const newDevice = await device.save();
     const newAsset = await asset.save();
 
-    res.json({
-      newDevice,
-      newAsset
-    });
+    res.status(201).send({ newDevice, newAsset });
   } catch (err) {
     next(err);
   }

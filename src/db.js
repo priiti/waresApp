@@ -9,6 +9,10 @@ if (!isTestEnvironment) {
   mongoose.set('debug', true);
 }
 
+if (isTestEnvironment) {
+  process.env.MONGODB_URI = process.env.MONGODB_URI_TEST;
+}
+
 mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true });
 
 mongoose.connection.on('connected', () => {
