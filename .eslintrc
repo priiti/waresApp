@@ -19,6 +19,7 @@
     ],
     "no-underscore-dangle": "off",
     "func-names": "off",
+    "global-require": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
   }
 }

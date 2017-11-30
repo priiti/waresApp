@@ -11,6 +11,8 @@ const db = require('./db');
 
 (async () => {
   try {
+    await db;
+
     const server = app.listen(app.get('port'), () => {
       logger.info(`Server running on ${server.address().port}`);
     });
@@ -26,3 +28,5 @@ const db = require('./db');
     logger.error(error);
   }
 })();
+
+module.exports = app;

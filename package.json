@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "export NODE_ENV=development || SET NODE_ENV=development && nodemon ./src/server.js",
-    "test": "NODE_ENV=test"
+    "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha ./**/*.test.js -R spec --exit"
   },
   "author": "Banana",
   "license": "MIT",
@@ -31,6 +31,9 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^6.0.1",
     "eslint-plugin-react": "^7.4.0",
-    "nodemon": "^1.12.1"
+    "expect": "^21.2.1",
+    "mocha": "^3.0.2",
+    "nodemon": "^1.12.1",
+    "supertest": "^3.0.0"
   }
 }

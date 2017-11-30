@@ -1,4 +1,5 @@
 const DeviceType = require('./../models/DeviceType');
+const { Error } = require('./../utils/errorHandlers');
 
 exports.getDeviceTypes = async (req, res, next) => {
   try {
@@ -36,6 +37,7 @@ exports.createNewDeviceType = async (req, res, next) => {
 
     const newDeviceType = new DeviceType({ name, description });
     await newDeviceType.save();
+    
     res.status(201).json({ deviceType });
   } catch (err) {
     next(err);
