@@ -4,7 +4,6 @@ const assetsController = require('./../controllers/assetsController');
 const roomsController = require('./../controllers/roomsController');
 const devicesStatusesController = require('./../controllers/deviceStatusesController');
 const devicesTypesController = require('./../controllers/deviceTypesController');
-const authController = require('./../controllers/authController');
 
 /**
  * Assets routes
@@ -45,13 +44,6 @@ router.post('/devices/statuses', devicesStatusesController.createNewDeviceStatus
 router.get('/devices/types', devicesTypesController.getDeviceTypes);
 router.get('/devices/types/:typeId', devicesTypesController.getDeviceTypeById);
 router.post('/devices/types', devicesTypesController.createNewDeviceType);
-
-/**
- * Auth routes
- */
-router.post('/auth/local/register', validator.registerUserLocalValidation, authController.registerUser);
-router.get('/auth/reset/:token', authController.validatePasswordResetToken);
-router.post('/auth/reset/:token', validator.passwordResetMatchValidation, authController.updatePassword);
 
 // /**
 //  * Users routes
