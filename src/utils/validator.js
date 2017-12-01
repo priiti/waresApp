@@ -1,7 +1,6 @@
-const { body, validationResult, check } = require('express-validator/check');
+const { body, validationResult } = require('express-validator/check');
 const { UnprocessableEntityError } = require('./errorHandlers');
 const { ObjectId } = require('mongodb');
-const { password, user } = require('./ApiConstants');
 
 exports.isMongoObjectId = objectId => !!ObjectId.isValid(objectId);
 exports.hasInvalidObjectId = (objectIdList) => {
@@ -15,7 +14,6 @@ exports.hasInvalidObjectId = (objectIdList) => {
 };
 
 const errorCheck = (req, res, next) => {
-  console.log(password.PASSWORD_MIN_LENGTH);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const message = errors.array()[0].msg;
@@ -42,32 +40,3 @@ exports.createRoomValidation = [
   errorCheck
 ];
 
-exports.registerUserLocalValidation = [
-  body('firstName').isLength({ min: user.MIN_NAME_LENGTH }).withMessage('First name is required.'),
-  body('lastName').isLength({ min: user.MIN_NAME_LENGTH }).withMessage('Last name is required.'),
-  body('email')
-    .isEmail().withMessage('Email is not valid')
-    .trim()
-    .normalizeEmail({ remove_dots: false }),
-  body('phoneNumber').isLength({ min: user.MIN_PHONE_NUMBER }).withMessage('Please provide correct phone number.'),
-  body('password').isLength({ min: password.PASSWORD_MIN_LENGTH })
-    .withMessage(`Password must be at least ${password.PASSWORD_MIN_LENGTH} characters long.`),
-  errorCheck
-];
-
-exports.passwordResetEmail = [
-  body('email')
-    .isEmail().withMessage('Email is not valid')
-    .trim()
-    .normalizeEmail({ remove_dots: false }),
-  errorCheck
-];
-
-exports.passwordResetMatchValidation = [
-  body('password').isLength({ min: password.PASSWORD_MIN_LENGTH })
-    .withMessage(`Password must be at least ${password.PASSWORD_MIN_LENGTH} characters long.`),
-  check('password-confirm')
-    .exists()
-    .custom((value, { req }) => value === req.body.password),
-  errorCheck
-];

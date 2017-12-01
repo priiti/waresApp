@@ -1,7 +1,6 @@
 const Asset = require('./../models/Asset');
 const Device = require('./../models/Device');
 const { isMongoObjectId, hasInvalidObjectId } = require('./../utils/validator');
-const { Error } = require('./../utils/errorHandlers');
 
 exports.getAssets = async (req, res, next) => {
   try {
