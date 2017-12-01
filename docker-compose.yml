@@ -1,0 +1,37 @@
+version: "2"
+
+services:
+  WaresMongo:
+    image: mongo:latest
+    container_name: "WaresMongo"
+    networks:
+      - main
+    environment:
+      - MONGO_DATA_DIR=WARES-data:/data/db
+    volumes:
+      - WARES-data:/data/db
+    ports:
+      - 27017:27017
+    command: mongod --logpath=/var/log/mongodb/mongodb.log --logappend
+  
+  WaresNode:
+    image: wares-be
+    container_name: "WaresNode"
+    networks:
+      - main
+    build: .
+    ports:
+      - ${PORT}:${PORT}
+    volumes:
+      - .:/var/app
+      - /var/app/node_modules
+    depends_on:
+      - WaresMongo
+    command:
+      npm run dev
+
+volumes:
+  WARES-data:
+
+networks:
+  main:
