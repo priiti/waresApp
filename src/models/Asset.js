@@ -16,17 +16,9 @@ const assetSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  updatedAt: {
-    type: Date
-  },
-  deletedAt: {
-    type: Date,
-    default: null
-  }
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date },
+  deletedAt: { type: Date, default: null }
 });
 
 assetSchema.statics.getAllAssetsData = function () {
