@@ -1,25 +1,11 @@
 const mongoose = require('mongoose');
 
 const roomSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  description: {
-    type: String
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  updatedAt: {
-    type: Date
-  },
-  deletedAt: {
-    type: Date,
-    default: null
-  }
+  name: { type: String, required: true, unique: true },
+  description: { type: String },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date },
+  deletedAt: { type: Date, default: null }
 }, {
   collection: 'rooms'
 });
