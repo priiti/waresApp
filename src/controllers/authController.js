@@ -38,9 +38,13 @@ exports.login = async (req, res, next) => {
 
 };
 
+exports.logout = async (req, res, next) => {
+
+};
+
 exports.forgotPassword = async (req, res, next) => {
   try {
-    const resetLinkSentSuccessMessage = `Password reset link has been sent to ${email}.`;
+    const resetLinkSentSuccessMessage = `Password reset link has been sent to ${req.body.email}.`;
 
     const user = await User.findOne({ 'login.email': req.body.email });
     if (!user) {
@@ -96,7 +100,26 @@ exports.validatePasswordResetToken = async (req, res, next) => {
 
 exports.updatePassword = async (req, res, next) => {
   try {
+    const user = await User.findOne({
+      'login.passwordResetToken': req.params.token,
+      'login.passwordResetExpires': { $gt: Date.now() }
+    });
 
+    if (!user) {
+      throw new Error('Password reset link invalid or expired. Please try again or contact your administrator');
+    }
+
+    user.login = {
+      ...user.login,
+      password: req.body.password,
+      passwordResetToken: undefined,
+      passwordResetExpires: undefined,
+      passwordUpdatedAt: Date.now()
+    };
+
+    await user.save();
+
+    res.json({ message: 'Password reset has been successfully completed.' });
   } catch (err) {
     next(err);
   }
