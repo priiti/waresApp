@@ -1,4 +1,5 @@
 const DeviceStatus = require('./../models/DeviceStatus');
+const { Error } = require('./../utils/errorHandlers');
 
 exports.getDeviceStatuses = async (req, res, next) => {
   try {
