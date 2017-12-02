@@ -44,7 +44,7 @@ exports.createNewAsset = async (req, res, next) => {
       userId
     } = req.body;
 
-    if (hasInvalidObjectId([inventoryId, deviceTypeId, deviceStatusId, roomId, userId])) {
+    if (hasInvalidObjectId([deviceTypeId, deviceStatusId, roomId, userId])) {
       throw new Error('Errors in form. Please check for fields!');
     }
 
@@ -63,10 +63,10 @@ exports.createNewAsset = async (req, res, next) => {
       user: userId
     });
 
-    const newDevice = await device.save();
-    const newAsset = await asset.save();
+    await device.save();
+    await asset.save();
 
-    res.status(201).send({ newDevice, newAsset });
+    res.status(201).json({ message: 'New asset added!' });
   } catch (err) {
     next(err);
   }
