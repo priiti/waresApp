@@ -30,7 +30,7 @@ exports.assetValidation = [
   body('deviceTypeId').exists().isLength({ min: 1 }).withMessage('Please select correct device type!'),
   body('deviceStatusId').exists().isLength({ min: 1 }).withMessage('Please select correct device status!'),
   body('description').exists().isLength({ min: 1 }).withMessage('Please provide description!'),
-  body('deviceName').exists().isLength({ min: 1 }).withMessage('Please provide device name!'),
+  body('name').exists().isLength({ min: 1 }).withMessage('Please provide device name!'),
   body('userId').exists().isLength({ min: 1 }).withMessage('Please provide correct user!'),
   body('roomId').exists().isLength({ min: 1 }).withMessage('Please provide correct room!'),
   errorCheck

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Category = require('./Category');
 
 const assetSchema = new mongoose.Schema({
   device: {
@@ -16,17 +17,9 @@ const assetSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  updatedAt: {
-    type: Date
-  },
-  deletedAt: {
-    type: Date,
-    default: null
-  }
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date },
+  deletedAt: { type: Date, default: null }
 });
 
 assetSchema.statics.getAllAssetsData = function () {
@@ -106,6 +99,15 @@ assetSchema.statics.getAllAssetsData = function () {
     }
   ]);
 };
+
+assetSchema.post('save', async () => {
+  try {
+    const assetsCount = await Asset.count({});
+    await Category.findOneAndUpdate({ name: 'Asset' }, { count: assetsCount });
+  } catch (err) {
+    throw new Error(err);
+  }
+});
 
 const Asset = mongoose.model('Asset', assetSchema);
 module.exports = Asset;
