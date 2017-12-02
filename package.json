@@ -10,6 +10,7 @@
   "author": "Banana",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "chalk": "^2.3.0",
@@ -20,6 +21,7 @@
     "mongodb": "^2.2.33",
     "mongoose": "^4.13.5",
     "morgan": "^1.9.0",
+    "nodemailer": "^4.4.0",
     "on-finished": "^2.3.0",
     "subclass-error": "^0.1.1",
     "util": "^0.10.3",
