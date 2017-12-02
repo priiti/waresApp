@@ -4,8 +4,8 @@
   "description": "Wares- Varade registrisüsteem",
   "main": "index.js",
   "scripts": {
-    "dev": "export NODE_ENV=development || SET NODE_ENV=development && nodemon ./src/server.js",
-    "test": "export NODE_ENV=test || SET NODE_ENV=test && mocha ./**/*.test.js -R spec --exit"
+    "dev": "NODE_ENV=development && nodemon ./src/server.js",
+    "test": "NODE_ENV=test && mocha ./**/*.test.js -R spec --exit"
   },
   "author": "Banana",
   "license": "MIT",
