@@ -3,6 +3,9 @@ const crypto = require('crypto');
 
 const { Error } = require('./../utils/errorHandlers');
 
+/**
+ * User registration
+ */
 exports.registerUser = async (req, res, next) => {
   try {
     const {
