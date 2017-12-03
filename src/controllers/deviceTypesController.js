@@ -26,6 +26,7 @@ exports.getDeviceTypeById = async (req, res, next) => {
 exports.createNewDeviceType = async (req, res, next) => {
   try {
     const { name, description } = req.body;
+
     if (!name) {
       throw new Error('Name is missing!');
     }

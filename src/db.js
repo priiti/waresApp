@@ -1,16 +1,14 @@
+require('dotenv').config({ path: '.env' });
 const mongoose = require('mongoose');
 const Promise = require('bluebird');
 const logger = require('./utils/logger');
 
 mongoose.Promise = Promise;
+const { MONGODB_URI, MONGODB_URI_TEST } = process.env;
 const isTestEnvironment = process.env.NODE_ENV === 'test';
 
 if (!isTestEnvironment) {
   mongoose.set('debug', true);
-}
-
-if (isTestEnvironment) {
-  process.env.MONGODB_URI = process.env.MONGODB_URI_TEST;
 }
 
 mongoose.connection.on('connected', () => {
@@ -23,4 +21,8 @@ mongoose.connection.on('error', (err) => {
   }
 });
 
-module.exports = mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true });
+const databaseConnectionUri =
+  isTestEnvironment ?
+    MONGODB_URI_TEST : MONGODB_URI;
+
+module.exports = mongoose.connect(databaseConnectionUri, { useMongoClient: true });

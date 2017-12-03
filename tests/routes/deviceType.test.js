@@ -1,6 +1,8 @@
 /* globals describe, it, before */
-const expect = require('expect');
-const DeviceType = require('./../../src/models/DeviceType');
+const { expect } = require('chai');
+const mongoose = require('mongoose');
+
+const DeviceType = mongoose.model('DeviceType');
 
 module.exports = (request) => {
   const newType = {
@@ -16,8 +18,8 @@ module.exports = (request) => {
         .expect(201)
         .expect((res) => {
           const { newDeviceType } = res.body;
-          expect(newDeviceType.name).toEqual(newType.name);
-          expect(newDeviceType.description).toEqual(newType.description);
+          expect(newDeviceType.name).to.equal(newType.name);
+          expect(newDeviceType.description).to.equal(newType.description);
           newType._id = newDeviceType._id;
         })
         .end(done);
@@ -30,12 +32,12 @@ module.exports = (request) => {
         .expect(400)
         .end((err, res) => {
           if (err) { return done(err); }
+
           DeviceType.find({})
             .then((types) => {
-              expect(types.length).toBe(1);
+              expect(types).to.have.lengthOf(1);
               done();
             });
-          return null;
         });
     });
   });
@@ -47,7 +49,7 @@ module.exports = (request) => {
         .expect(200)
         .expect((res) => {
           const { deviceTypes } = res.body;
-          expect(deviceTypes.length).toBe(1);
+          expect(deviceTypes).to.have.lengthOf(1);
         })
         .end(done);
     });
@@ -60,9 +62,9 @@ module.exports = (request) => {
         .expect(200)
         .expect((res) => {
           const { deviceType } = res.body;
-          expect(deviceType._id).toBe(newType._id);
-          expect(deviceType.name).toBe(newType.name);
-          expect(deviceType.description).toBe(newType.description);
+          expect(deviceType._id).to.equal(newType._id);
+          expect(deviceType.name).to.equal(newType.name);
+          expect(deviceType.description).to.equal(newType.description);
         })
         .end(done);
     });
