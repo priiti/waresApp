@@ -9,7 +9,11 @@ const { Error } = require('./../utils/errorHandlers');
 exports.registerUser = async (req, res, next) => {
   try {
     const {
-      firstName, lastName, phoneNumber, email, password
+      firstName,
+      lastName,
+      phoneNumber,
+      email,
+      password
     } = req.body;
 
     const existingUser = await User.findOne({ 'login.email': email });
