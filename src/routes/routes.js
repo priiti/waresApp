@@ -31,7 +31,8 @@ router.post('/assets', validator.assetValidation, assetsController.createNewAsse
 //  */
 router.get('/rooms', roomsController.getRooms);
 router.get('/rooms/:roomId', roomsController.getRoomById);
-router.post('/rooms', validator.createRoomValidation, roomsController.createNewRoom);
+router.post('/rooms', validator.roomValidation, roomsController.createNewRoom);
+router.patch('/rooms/:roomId', validator.roomValidation, roomsController.updateRoom);
 
 // /**
 //  * Device statuses routes
@@ -60,5 +61,6 @@ router.post('/auth/reset/:token', validator.passwordResetMatchValidation, authCo
 router.get('/users', userController.getUsers);
 router.get('/users/:userId', userController.getUserById);
 router.post('/users', validator.createUserValidation, userController.createNewUser);
+router.patch('/users/:userId', validator.editUser, userController.updateUser);
 
 module.exports = router;

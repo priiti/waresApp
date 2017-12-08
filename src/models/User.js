@@ -17,7 +17,13 @@ const userSchema = new mongoose.Schema({
   updatedAt: { type: Date },
   deletedAt: { type: Date, default: null }
 }, {
-  collection: 'users'
+  collection: 'users',
+  toObject: {
+    virtuals: true
+  },
+  toJSON: {
+    virtuals: true
+  }
 });
 
 /**
@@ -46,6 +52,10 @@ userSchema.pre('save', async function (next) {
 userSchema.methods.validatePasswords = function (userGivenPassword) {
   return bcrypt.compare(userGivenPassword, this.login.password);
 };
+
+userSchema.virtual('fullName').get(function () {
+  return `${this.firstName} ${this.lastName}`;
+});
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;

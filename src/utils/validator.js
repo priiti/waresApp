@@ -46,7 +46,7 @@ exports.deviceStatusValidation = [
   errorCheck
 ];
 
-exports.createRoomValidation = [
+exports.roomValidation = [
   body('name').isLength({ min: 1 }).withMessage('Please provide correct name for the room!'),
   errorCheck
 ];
@@ -61,6 +61,17 @@ exports.createUserValidation = [
   body('phoneNumber').isLength({ min: user.MIN_PHONE_NUMBER }).withMessage('Please provide correct phone number.'),
   body('password').isLength({ min: password.PASSWORD_MIN_LENGTH })
     .withMessage(`Password must be at least ${password.PASSWORD_MIN_LENGTH} characters long.`),
+  errorCheck
+];
+
+exports.editUser = [
+  body('firstName').isLength({ min: user.MIN_NAME_LENGTH }).withMessage('First name is required.'),
+  body('lastName').isLength({ min: user.MIN_NAME_LENGTH }).withMessage('Last name is required.'),
+  body('email')
+    .isEmail().withMessage('Email is not valid')
+    .trim()
+    .normalizeEmail({ remove_dots: false }),
+  body('phoneNumber').isLength({ min: user.MIN_PHONE_NUMBER }).withMessage('Please provide correct phone number.'),
   errorCheck
 ];
 
