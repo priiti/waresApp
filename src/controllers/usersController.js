@@ -55,3 +55,34 @@ exports.createNewUser = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.updateUser = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const {
+      firstName,
+      lastName,
+      phoneNumber,
+      email
+    } = req.body;
+
+    const room = await User.findOneAndUpdate(
+      { _id: userId },
+      {
+        firstName,
+        lastName,
+        phoneNumber,
+        'login.email': email
+      },
+      { new: true }
+    );
+
+    if (!room) {
+      throw new Error('User was not updated!');
+    }
+
+    res.status(206).json({ message: 'User successfully updated!' });
+  } catch (err) {
+    next(err);
+  }
+};

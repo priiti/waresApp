@@ -20,7 +20,23 @@ exports.getAssetById = async (req, res, next) => {
       throw new Error('Asset not found!');
     }
 
-    const asset = await Asset.findOne({ _id: assetId });
+    const asset = await Asset.findOne({ _id: assetId })
+      .populate({
+        path: 'device',
+        select: 'name description inventoryId serialNumber',
+        populate: {
+          path: 'deviceType deviceStatus',
+          select: 'name'
+        }
+      })
+      .populate({
+        path: 'room',
+        select: 'name'
+      })
+      .populate({
+        path: 'user',
+        select: 'firstName lastName fullName'
+      });
     if (!asset) {
       throw new Error('Asset not found!');
     }
@@ -67,6 +83,14 @@ exports.createNewAsset = async (req, res, next) => {
     await asset.save();
 
     res.status(201).json({ message: 'New asset added!' });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.updateAsset = async (req, res, next) => {
+  try {
+    res.status(206).json({ message: 'User successfully updated!' });
   } catch (err) {
     next(err);
   }
