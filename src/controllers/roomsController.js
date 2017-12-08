@@ -25,10 +25,6 @@ exports.getRoomById = async (req, res, next) => {
 exports.createNewRoom = async (req, res, next) => {
   try {
     const { name, description } = req.body;
-    if (!name || !description) {
-      throw new Error('Name or description is missing!');
-    }
-
     const room = await Room.findOne({ name });
     if (room) {
       throw new Error(`Room ${name} already exists!`);

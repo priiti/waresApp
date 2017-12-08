@@ -5,6 +5,7 @@ const roomsController = require('./../controllers/roomsController');
 const devicesStatusesController = require('./../controllers/deviceStatusesController');
 const devicesTypesController = require('./../controllers/deviceTypesController');
 const authController = require('./../controllers/authController');
+const userController = require('./../controllers/usersController');
 
 /**
  * Assets routes
@@ -37,27 +38,27 @@ router.post('/rooms', validator.createRoomValidation, roomsController.createNewR
 //  */
 router.get('/devices/statuses', devicesStatusesController.getDeviceStatuses);
 router.get('/devices/statuses/:statusId', devicesStatusesController.getDeviceStatusById);
-router.post('/devices/statuses', devicesStatusesController.createNewDeviceStatus);
+router.post('/devices/statuses', validator.deviceStatusValidation, devicesStatusesController.createNewDeviceStatus);
 
 // /**
 //  * Device types routes
 //  */
 router.get('/devices/types', devicesTypesController.getDeviceTypes);
 router.get('/devices/types/:typeId', devicesTypesController.getDeviceTypeById);
-router.post('/devices/types', devicesTypesController.createNewDeviceType);
+router.post('/devices/types', validator.deviceTypesValidation, devicesTypesController.createNewDeviceType);
 
 /**
  * Auth routes
  */
-router.post('/auth/local/register', validator.registerUserLocalValidation, authController.registerUser);
+router.post('/auth/local/register', validator.createUserValidation, authController.registerUser);
 router.get('/auth/reset/:token', authController.validatePasswordResetToken);
 router.post('/auth/reset/:token', validator.passwordResetMatchValidation, authController.updatePassword);
 
 // /**
 //  * Users routes
 //  */
-// router.get('/users');
-// router.post('/users');
-// router.get('/users/:userId');
+router.get('/users', userController.getUsers);
+router.get('/users/:userId', userController.getUserById);
+router.post('/users', validator.createUserValidation, userController.createNewUser);
 
 module.exports = router;

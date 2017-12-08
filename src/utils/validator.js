@@ -25,24 +25,33 @@ const errorCheck = (req, res, next) => {
 };
 
 exports.assetValidation = [
-  body('inventoryId').exists().isLength({ min: 1 }).withMessage('Please provide inventory id number!'),
-  body('serialNumber').exists().isLength({ min: 1 }).withMessage('Please provide correct serial number!'),
-  body('deviceTypeId').exists().isLength({ min: 1 }).withMessage('Please select correct device type!'),
-  body('deviceStatusId').exists().isLength({ min: 1 }).withMessage('Please select correct device status!'),
-  body('description').exists().isLength({ min: 1 }).withMessage('Please provide description!'),
-  body('name').exists().isLength({ min: 1 }).withMessage('Please provide device name!'),
-  body('userId').exists().isLength({ min: 1 }).withMessage('Please provide correct user!'),
-  body('roomId').exists().isLength({ min: 1 }).withMessage('Please provide correct room!'),
+  body('inventoryId').isLength({ min: 1 }).withMessage('Please provide inventory id number!'),
+  body('serialNumber').isLength({ min: 1 }).withMessage('Please provide correct serial number!'),
+  body('deviceTypeId').isLength({ min: 1 }).withMessage('Please select correct device type!'),
+  body('deviceStatusId').isLength({ min: 1 }).withMessage('Please select correct device status!'),
+  body('description').isLength({ min: 1 }).withMessage('Please provide description!'),
+  body('name').isLength({ min: 1 }).withMessage('Please provide device name!'),
+  body('userId').isLength({ min: 1 }).withMessage('Please provide correct user!'),
+  body('roomId').isLength({ min: 1 }).withMessage('Please provide correct room!'),
+  errorCheck
+];
+
+exports.deviceTypesValidation = [
+  body('name').isLength({ min: 1 }).withMessage('Please provide valid device type!'),
+  errorCheck
+];
+
+exports.deviceStatusValidation = [
+  body('name').isLength({ min: 1 }).withMessage('Please provide valid device status!'),
   errorCheck
 ];
 
 exports.createRoomValidation = [
-  body('name').exists().isLength({ min: 1 }).withMessage('Please provide correct name for the room!'),
-  body('description').exists().isLength({ min: 1 }).withMessage('Please provide correct description for the room!'),
+  body('name').isLength({ min: 1 }).withMessage('Please provide correct name for the room!'),
   errorCheck
 ];
 
-exports.registerUserLocalValidation = [
+exports.createUserValidation = [
   body('firstName').isLength({ min: user.MIN_NAME_LENGTH }).withMessage('First name is required.'),
   body('lastName').isLength({ min: user.MIN_NAME_LENGTH }).withMessage('Last name is required.'),
   body('email')
