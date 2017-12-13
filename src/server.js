@@ -17,6 +17,14 @@ const db = require('./db');
       logger.info(`Server running on ${server.address().port}`);
     });
 
+    process.on('uncaughtException', (err) => {
+      logger.error(err);
+    });
+
+    process.on('unhandledRejection', (err, promise) => {
+      logger.error(err);
+    });
+
     process.on('SIGNINT', () => {
       db.connection.close(() => {
         logger.error('Database connection terminated!');
