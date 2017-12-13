@@ -2,6 +2,7 @@ const User = require('./../models/User');
 const crypto = require('crypto');
 
 const { Error } = require('./../utils/errorHandlers');
+const { UserMessage } = require('./../constants/messages');
 
 /**
  * User registration
@@ -18,7 +19,7 @@ exports.registerUser = async (req, res, next) => {
 
     const existingUser = await User.findOne({ 'login.email': email });
     if (existingUser) {
-      throw new Error(`Account with email address ${email} already exists.`);
+      throw new Error(UserMessage.DUPLICATE_EMAIL);
     }
 
     const user = await new User({
@@ -32,10 +33,10 @@ exports.registerUser = async (req, res, next) => {
     }).save();
 
     if (!user) {
-      throw new Error('User was not created!');
+      throw new Error(UserMessage.USER_CREATE_FAIL);
     }
 
-    return res.status(201).json({ message: 'User was successfully created.' });
+    return res.status(201).json({ message: UserMessage.USER_CREATED });
   } catch (err) {
     next(err);
   }
@@ -51,7 +52,7 @@ exports.logout = async (req, res, next) => {
 
 exports.forgotPassword = async (req, res, next) => {
   try {
-    const resetLinkSentSuccessMessage = `Password reset link has been sent to ${req.body.email}.`;
+    const resetLinkSentSuccessMessage = UserMessage.PASSWORD_RESET_LINK(req.body.email);
 
     const user = await User.findOne({ 'login.email': req.body.email });
     if (!user) {
@@ -66,7 +67,7 @@ exports.forgotPassword = async (req, res, next) => {
     if (passwordResetSentTimestamp &&
         passwordResetSentTimestamp +
         parseInt(process.env.PASSWORD_RESET_LINK_LIMIT, 10) > Date.now()) {
-      throw new Error('Password reset link has been already sent. Please wait to request new one.');
+      throw new Error(UserMessage.PASSWORD_RESET_LINK_ALREADY_SENT);
     }
 
     user.login = {
@@ -96,10 +97,10 @@ exports.validatePasswordResetToken = async (req, res, next) => {
     });
 
     if (!user) {
-      throw new Error('Password reset link invalid or expired. Please try again or contact your administrator');
+      throw new Error(UserMessage.PASSWORD_RESET_EXP_INVALID);
     }
 
-    res.json({ message: 'Please fill required fields for password reset.' });
+    res.json({ message: UserMessage.PASSWORD_REQUIRED_FIELDS });
   } catch (err) {
     next(err);
   }
@@ -113,7 +114,7 @@ exports.updatePassword = async (req, res, next) => {
     });
 
     if (!user) {
-      throw new Error('Password reset link invalid or expired. Please try again or contact your administrator');
+      throw new Error(UserMessage.PASSWORD_RESET_EXP_INVALID);
     }
 
     user.login = {
@@ -126,7 +127,7 @@ exports.updatePassword = async (req, res, next) => {
 
     await user.save();
 
-    res.json({ message: 'Password reset has been successfully completed.' });
+    res.json({ message: UserMessage.PASSWORD_RESET_SUCCESS });
   } catch (err) {
     next(err);
   }

@@ -1,6 +1,7 @@
 const Asset = require('./../models/Asset');
 const Device = require('./../models/Device');
 const { isMongoObjectId, hasInvalidObjectId } = require('./../utils/validator');
+const { AssetMessage } = require('./../constants/messages');
 
 exports.getAssets = async (req, res, next) => {
   try {
@@ -17,7 +18,7 @@ exports.getAssetById = async (req, res, next) => {
     const { assetId } = req.params;
 
     if (!isMongoObjectId(assetId)) {
-      throw new Error('Asset not found!');
+      throw new Error(AssetMessage.ASSET_NOT_FOUND);
     }
 
     const asset = await Asset.findOne({ _id: assetId })
@@ -38,7 +39,7 @@ exports.getAssetById = async (req, res, next) => {
         select: 'firstName lastName fullName'
       });
     if (!asset) {
-      throw new Error('Asset not found!');
+      throw new Error(AssetMessage.ASSET_NOT_FOUND);
     }
 
     res.status(200).json({ asset });
@@ -61,7 +62,7 @@ exports.createNewAsset = async (req, res, next) => {
     } = req.body;
 
     if (hasInvalidObjectId([deviceTypeId, deviceStatusId, roomId, userId])) {
-      throw new Error('Errors in form. Please check for fields!');
+      throw new Error(AssetMessage.ASSET_CREATE_FAIL);
     }
 
     const device = new Device({
@@ -82,7 +83,7 @@ exports.createNewAsset = async (req, res, next) => {
     await device.save();
     await asset.save();
 
-    res.status(201).json({ message: 'New asset added!' });
+    res.status(201).json({ message: AssetMessage.ASSET_CREATED });
   } catch (err) {
     next(err);
   }
@@ -90,7 +91,7 @@ exports.createNewAsset = async (req, res, next) => {
 
 exports.updateAsset = async (req, res, next) => {
   try {
-    res.status(206).json({ message: 'User successfully updated!' });
+    res.status(206).json({ message: AssetMessage.ASSET_UPDATED });
   } catch (err) {
     next(err);
   }
