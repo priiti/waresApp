@@ -5,7 +5,7 @@ const { isMongoObjectId } = require('../utils/validator');
 
 exports.getIncidents = async (req, res, next) => {
   try {
-    const incidents = Incident.find({});
+    const incidents = await Incident.find({});
     if (!incidents) {
       throw new Error(IncidentMessage.INCIDENTS_NOT_FOUND);
     }
@@ -22,7 +22,7 @@ exports.getIncidentById = async (req, res, next) => {
     if (!isMongoObjectId(incidentId)) {
       throw new Error(IncidentMessage.INCIDENT_NOT_FOUND);
     }
-    const incident = Incident.findById(incidentId);
+    const incident = await Incident.findById(incidentId);
     if (!incident) {
       throw new Error(IncidentMessage.INCIDENT_NOT_FOUND);
     }
