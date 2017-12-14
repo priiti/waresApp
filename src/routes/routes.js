@@ -6,6 +6,7 @@ const devicesStatusesController = require('./../controllers/deviceStatusesContro
 const devicesTypesController = require('./../controllers/deviceTypesController');
 const authController = require('./../controllers/authController');
 const userController = require('./../controllers/usersController');
+const incidentsController = require('./../controllers/incidentsController');
 
 /**
  * Assets routes
@@ -62,5 +63,12 @@ router.get('/users', userController.getUsers);
 router.get('/users/:userId', userController.getUserById);
 router.post('/users', validator.createUserValidation, userController.createNewUser);
 router.patch('/users/:userId', validator.editUser, userController.updateUser);
+
+// /**
+//  * Incidents routes
+//  */
+router.get('/incidents', incidentsController.getIncidents);
+router.get('/incidents/:id', incidentsController.getIncidentById);
+router.post('/incidents', incidentsController.createNewIncident);
 
 module.exports = router;
