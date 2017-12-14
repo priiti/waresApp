@@ -16,7 +16,7 @@ exports.UserMessage = {
   PASSWORD_RESET_SUCCESS: 'Password reset has been successfully completed.'
 };
 
-exports.AuthMessages = {
+exports.AuthMessage = {
   LOGIN_FAIL: 'Password or email invalid.',
   LOGOUT_SUCCESS: 'Successfully logged out.',
   UNABLE_TO_BLACKLIST_TOKEN: 'Token blacklisting failed.'
