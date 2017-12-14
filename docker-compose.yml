@@ -12,7 +12,7 @@ services:
       - WARES-data:/data/db
     ports:
       - 27017:27017
-    command: mongod --logpath=/var/log/mongodb/mongodb.log --logappend
+    command: mongod --logpath=/var/log/mongodb/mongodb.log --logappend --bind_ip
   
   WaresNode:
     image: wares-be
