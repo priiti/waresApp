@@ -15,3 +15,9 @@ exports.UserMessage = {
   PASSWORD_REQUIRED_FIELDS: 'Please fill required fields for password reset.',
   PASSWORD_RESET_SUCCESS: 'Password reset has been successfully completed.'
 };
+
+exports.AuthMessages = {
+  LOGIN_FAIL: 'Password or email invalid.',
+  LOGOUT_SUCCESS: 'Successfully logged out.',
+  UNABLE_TO_BLACKLIST_TOKEN: 'Token blacklisting failed.'
+};

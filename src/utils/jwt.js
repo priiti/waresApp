@@ -27,7 +27,7 @@ exports.jwtEnsure = async (req, res, next) => {
 
     const lastPasswordUpdate = Math.floor((new Date(user.updatedAt) * 1) / 1000);
     if (lastPasswordUpdate >= req.user.iat) {
-      const blacklisted = await this.blackListToken(req.user);
+      const blacklisted = await this.blacklistToken(req.user);
       if (!blacklisted) {
         return next(new Error('Unable to blacklist token.'));
       }
@@ -64,7 +64,7 @@ exports.signToken = (user) => {
   return jwt.sign(data, jwtSecret, { expiresIn });
 };
 
-exports.blackListToken = async (user) => {
+exports.blacklistToken = async (user) => {
   try {
     const newToken = new Token({
       userId: user._id,

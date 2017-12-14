@@ -2,11 +2,9 @@ const User = require('./../models/User');
 const crypto = require('crypto');
 
 const { Error } = require('./../utils/errorHandlers');
-const { UserMessage } = require('./../constants/messages');
+const { UserMessage, AuthMessages } = require('./../constants/messages');
+const { signToken, blacklistToken } = require('../utils/jwt');
 
-/**
- * User registration
- */
 exports.registerUser = async (req, res, next) => {
   try {
     const {
@@ -43,11 +41,36 @@ exports.registerUser = async (req, res, next) => {
 };
 
 exports.login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
 
+    const user = await User.findOne({ 'login.email': email });
+    if (!user) {
+      throw new Error(AuthMessages.LOGIN_FAIL);
+    }
+
+    const isMatch = user.validatePasswords(password);
+    if (!isMatch) {
+      throw new Error(AuthMessages.LOGIN_FAIL);
+    }
+
+    res.json({ token: signToken(user) });
+  } catch (err) {
+    next(err);
+  }
 };
 
 exports.logout = async (req, res, next) => {
+  try {
+    const blacklistedToken = await blacklistToken(req.user);
+    if (!blacklistedToken) {
+      throw new Error(AuthMessages.UNABLE_TO_BLACKLIST_TOKEN);
+    }
 
+    res.json({ message: AuthMessages.LOGOUT_SUCCESS });
+  } catch (err) {
+    next(err);
+  }
 };
 
 exports.forgotPassword = async (req, res, next) => {
