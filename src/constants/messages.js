@@ -16,6 +16,12 @@ exports.UserMessage = {
   PASSWORD_RESET_SUCCESS: 'Password reset has been successfully completed.'
 };
 
+exports.AuthMessage = {
+  LOGIN_FAIL: 'Password or email invalid.',
+  LOGOUT_SUCCESS: 'Successfully logged out.',
+  UNABLE_TO_BLACKLIST_TOKEN: 'Token blacklisting failed.'
+};
+
 exports.IncidentMessage = {
   INCIDENT_NOT_FOUND: 'Incident with given id was not found!',
   INCIDENTS_NOT_FOUND: 'No incidents found!',

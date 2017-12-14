@@ -55,6 +55,8 @@ router.post('/devices/types', validator.deviceTypesValidation, devicesTypesContr
 router.post('/auth/local/register', validator.createUserValidation, authController.registerUser);
 router.get('/auth/reset/:token', authController.validatePasswordResetToken);
 router.post('/auth/reset/:token', validator.passwordResetMatchValidation, authController.updatePassword);
+router.post('/auth/login', authController.login);
+router.post('/auth/logout', authController.logout);
 
 // /**
 //  * Users routes
