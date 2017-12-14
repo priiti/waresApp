@@ -15,3 +15,8 @@ exports.UserMessage = {
   PASSWORD_REQUIRED_FIELDS: 'Please fill required fields for password reset.',
   PASSWORD_RESET_SUCCESS: 'Password reset has been successfully completed.'
 };
+
+exports.IncidentMessage = {
+  INCIDENT_NOT_FOUND: 'Incident with given id was not found',
+  INCIDENTS_NOT_FOUND: 'No incidents found'
+};
