@@ -17,6 +17,8 @@ exports.UserMessage = {
 };
 
 exports.IncidentMessage = {
-  INCIDENT_NOT_FOUND: 'Incident with given id was not found',
-  INCIDENTS_NOT_FOUND: 'No incidents found'
+  INCIDENT_NOT_FOUND: 'Incident with given id was not found!',
+  INCIDENTS_NOT_FOUND: 'No incidents found!',
+  INCIDENT_CREATE_FAIL: 'Incident creation failed. Please check input data!',
+  INCIDENT_CREATED: 'Incident was successfully created'
 };

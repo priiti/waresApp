@@ -32,3 +32,28 @@ exports.getIncidentById = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.createNewIncident = async (req, res, next) => {
+  try {
+    const {
+      assetId,
+      title,
+      description
+    } = req.body;
+    if (!isMongoObjectId(assetId) || !title || !description) {
+      throw new Error(IncidentMessage.INCIDENT_CREATE_FAIL);
+    }
+
+    const incident = new Incident({
+      assetId,
+      title,
+      description
+    });
+
+    await incident.save();
+
+    res.status(201).send(IncidentMessage.INCIDENT_CREATED);
+  } catch (err) {
+    next(err);
+  }
+};
