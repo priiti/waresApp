@@ -45,7 +45,7 @@ exports.createNewIncident = async (req, res, next) => {
     }
 
     const incident = new Incident({
-      assetId,
+      asset: assetId,
       title,
       description
     });
