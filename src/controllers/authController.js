@@ -49,11 +49,10 @@ exports.login = async (req, res, next) => {
       throw new Error(AuthMessages.LOGIN_FAIL);
     }
 
-    const isMatch = user.validatePasswords(password);
+    const isMatch = await user.validatePasswords(password);
     if (!isMatch) {
       throw new Error(AuthMessages.LOGIN_FAIL);
     }
-
     res.json({ token: signToken(user) });
   } catch (err) {
     next(err);
