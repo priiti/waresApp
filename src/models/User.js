@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
+const roles = require('./../constants/roles');
+
 const userSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
@@ -13,6 +15,10 @@ const userSchema = new mongoose.Schema({
     passwordResetExpires: Date,
     passwordUpdatedAt: { type: Date, default: null }
   },
+  roles: [{
+    type: String,
+    enum: Object.values(roles)
+  }],
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date },
   deletedAt: { type: Date, default: null }
