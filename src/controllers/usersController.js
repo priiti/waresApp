@@ -1,3 +1,4 @@
+const HTTPStatus = require('http-status');
 const User = require('./../models/User');
 
 exports.getUsers = async (req, res, next) => {
@@ -50,7 +51,7 @@ exports.createNewUser = async (req, res, next) => {
       throw new Error('User was not created!');
     }
 
-    return res.status(201).json({ message: 'User was successfully created.' });
+    return res.status(HTTPStatus.OK).json({ message: 'User was successfully created.' });
   } catch (err) {
     next(err);
   }
@@ -81,7 +82,7 @@ exports.updateUser = async (req, res, next) => {
       throw new Error('User was not updated!');
     }
 
-    res.status(206).json({ message: 'User successfully updated!' });
+    res.status(HTTPStatus.OK).json({ message: 'User successfully updated!' });
   } catch (err) {
     next(err);
   }

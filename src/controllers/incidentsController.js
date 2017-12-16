@@ -1,3 +1,4 @@
+const HTTPStatus = require('http-status');
 const Incident = require('../models/Incident');
 const { IncidentMessage } = require('../constants/messages');
 const { Error } = require('./../utils/errorHandlers');
@@ -10,7 +11,7 @@ exports.getIncidents = async (req, res, next) => {
       throw new Error(IncidentMessage.INCIDENTS_NOT_FOUND);
     }
 
-    res.status(200).json(incidents);
+    res.status(HTTPStatus.OK).json(incidents);
   } catch (err) {
     next(err);
   }
@@ -27,7 +28,7 @@ exports.getIncidentById = async (req, res, next) => {
       throw new Error(IncidentMessage.INCIDENT_NOT_FOUND);
     }
 
-    res.status(200).json(incident);
+    res.status(HTTPStatus.OK).json(incident);
   } catch (err) {
     next(err);
   }
@@ -52,7 +53,7 @@ exports.createNewIncident = async (req, res, next) => {
 
     await incident.save();
 
-    res.status(201).send(IncidentMessage.INCIDENT_CREATED);
+    res.status(HTTPStatus.CREATED).send(IncidentMessage.INCIDENT_CREATED);
   } catch (err) {
     next(err);
   }
