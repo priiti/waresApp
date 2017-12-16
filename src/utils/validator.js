@@ -51,8 +51,8 @@ exports.roomValidation = [
 ];
 
 exports.incidentValidation = [
-  body('title').isLength({ min: 2 }),
-  body('description').isLength({ min: 2 }),
+  body('title').isLength({ min: 1 }).withMessage('Incident title is missing.'),
+  body('description').isLength({ min: 1 }).withMessage('Incident description is missing.'),
   errorCheck
 ];
 
