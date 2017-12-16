@@ -50,6 +50,12 @@ exports.roomValidation = [
   errorCheck
 ];
 
+exports.incidentValidation = [
+  body('title').isLength({ min: 1 }).withMessage('Incident title is missing.'),
+  body('description').isLength({ min: 1 }).withMessage('Incident description is missing.'),
+  errorCheck
+];
+
 exports.createUserValidation = [
   body('firstName').isLength({ min: user.MIN_NAME_LENGTH }).withMessage('First name is required.'),
   body('lastName').isLength({ min: user.MIN_NAME_LENGTH }).withMessage('Last name is required.'),
