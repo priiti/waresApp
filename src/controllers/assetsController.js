@@ -1,5 +1,6 @@
 const Asset = require('./../models/Asset');
 const Device = require('./../models/Device');
+const HTTPStatus = require('http-status');
 const { isMongoObjectId, hasInvalidObjectId } = require('./../utils/validator');
 const { AssetMessage } = require('./../constants/messages');
 
@@ -7,7 +8,7 @@ exports.getAssets = async (req, res, next) => {
   try {
     const assets = await Asset.getAllAssetsData();
 
-    res.status(200).json({ assets });
+    res.status(HTTPStatus.OK).json({ assets });
   } catch (err) {
     next(err);
   }
@@ -42,7 +43,7 @@ exports.getAssetById = async (req, res, next) => {
       throw new Error(AssetMessage.ASSET_NOT_FOUND);
     }
 
-    res.status(200).json({ asset });
+    res.status(HTTPStatus.OK).json({ asset });
   } catch (err) {
     next(err);
   }
@@ -83,16 +84,16 @@ exports.createNewAsset = async (req, res, next) => {
     await device.save();
     await asset.save();
 
-    res.status(201).json({ message: AssetMessage.ASSET_CREATED });
+    res.status(HTTPStatus.CREATED).json({ message: AssetMessage.ASSET_CREATED });
   } catch (err) {
     next(err);
   }
 };
 
-exports.updateAsset = async (req, res, next) => {
-  try {
-    res.status(206).json({ message: AssetMessage.ASSET_UPDATED });
-  } catch (err) {
-    next(err);
-  }
-};
+// exports.updateAsset = async (req, res, next) => {
+//   try {
+//     res.status(206).json({ message: AssetMessage.ASSET_UPDATED });
+//   } catch (err) {
+//     next(err);
+//   }
+// };

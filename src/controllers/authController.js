@@ -1,5 +1,6 @@
 const User = require('./../models/User');
 const crypto = require('crypto');
+const HTTPStatus = require('http-status');
 
 const { Error } = require('./../utils/errorHandlers');
 const { UserMessage, AuthMessage } = require('./../constants/messages');
@@ -34,7 +35,7 @@ exports.registerUser = async (req, res, next) => {
       throw new Error(UserMessage.USER_CREATE_FAIL);
     }
 
-    return res.status(201).json({ message: UserMessage.USER_CREATED });
+    return res.status(HTTPStatus.OK).json({ message: UserMessage.USER_CREATED });
   } catch (err) {
     next(err);
   }

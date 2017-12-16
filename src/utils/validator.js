@@ -15,7 +15,6 @@ exports.hasInvalidObjectId = (objectIdList) => {
 };
 
 const errorCheck = (req, res, next) => {
-  console.log(password.PASSWORD_MIN_LENGTH);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const message = errors.array()[0].msg;

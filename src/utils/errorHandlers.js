@@ -1,18 +1,20 @@
 const SubclassError = require('subclass-error');
+const HTTPStatus = require('http-status');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-exports.Error = SubclassError('Error', { status: 400, message: 'Bad request' });
+exports.Error = SubclassError('Error', { status: HTTPStatus.BAD_REQUEST, message: 'Bad request' });
 
-exports.NotAuthorizedError = SubclassError('NotAuthorizedError', { status: 401, message: 'Unauthorized' });
-exports.ForbiddenError = SubclassError('ForbiddenError', { status: 403 });
-exports.NotFoundError = SubclassError('NotFoundError', { status: 404 });
-exports.UnprocessableEntityError = SubclassError('UnprocessableEntityError', { status: 422 });
-exports.ServerError = SubclassError('ServerError', { status: 500, message: 'Server error' });
+exports.NotAuthorizedError = SubclassError('NotAuthorizedError', { status: HTTPStatus.UNAUTHORIZED, message: 'Unauthorized' });
+exports.ForbiddenError = SubclassError('ForbiddenError', { status: HTTPStatus.FORBIDDEN });
+exports.NotFoundError = SubclassError('NotFoundError', { status: HTTPStatus.NOT_FOUND });
+exports.UnprocessableEntityError = SubclassError('UnprocessableEntityError', { status: HTTPStatus.UNPROCESSABLE_ENTITY });
+exports.ServerError = SubclassError('ServerError', { status: HTTPStatus.INTERNAL_SERVER_ERROR, message: 'Server error' });
 
 exports.notFound = (req, res) => res.status(404).send('Not Found');
-exports.errorHandler = (err, req, res, next) => res.status(err.status || 500).json({
-  message: err.message,
-  errors: err.errors || undefined,
-  stack: isProduction ? undefined : err.stack
-});
+exports.errorHandler = (err, req, res, next) =>
+  res.status(err.status || HTTPStatus.INTERNAL_SERVER_ERROR).json({
+    message: err.message,
+    errors: err.errors || undefined,
+    stack: isProduction ? undefined : err.stack
+  });

@@ -1,10 +1,11 @@
+const HTTPStatus = require('http-status');
 const Room = require('./../models/Room');
 const { Error } = require('./../utils/errorHandlers');
 
 exports.getRooms = async (req, res, next) => {
   try {
     const rooms = await Room.find({});
-    res.status(200).json({ rooms });
+    res.status(HTTPStatus.OK).json({ rooms });
   } catch (err) {
     next(err);
   }
@@ -17,7 +18,7 @@ exports.getRoomById = async (req, res, next) => {
     if (!room) {
       throw new Error('No room found!');
     }
-    res.status(200).json({ room });
+    res.status(HTTPStatus.OK).json({ room });
   } catch (err) {
     next(err);
   }
@@ -33,7 +34,7 @@ exports.createNewRoom = async (req, res, next) => {
 
     const newRoom = new Room({ name, description });
     await newRoom.save();
-    res.status(201).json({ newRoom });
+    res.status(HTTPStatus.CREATED).json({ newRoom });
   } catch (err) {
     next(err);
   }
@@ -57,7 +58,7 @@ exports.updateRoom = async (req, res, next) => {
       throw new Error('Room was not updated!');
     }
 
-    res.status(206).json({ message: 'Room successfully updated!' });
+    res.status(HTTPStatus.OK).json({ message: 'Room successfully updated!' });
   } catch (err) {
     next(err);
   }
