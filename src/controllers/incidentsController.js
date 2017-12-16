@@ -41,7 +41,7 @@ exports.createNewIncident = async (req, res, next) => {
       title,
       description
     } = req.body;
-    if (!isMongoObjectId(assetId) || !title || !description) {
+    if (!isMongoObjectId(assetId)) {
       throw new Error(IncidentMessage.INCIDENT_CREATE_FAIL);
     }
 

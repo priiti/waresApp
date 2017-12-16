@@ -71,6 +71,6 @@ router.patch('/users/:userId', validator.editUser, userController.updateUser);
 //  */
 router.get('/incidents', incidentsController.getIncidents);
 router.get('/incidents/:id', incidentsController.getIncidentById);
-router.post('/incidents', incidentsController.createNewIncident);
+router.post('/incidents', validator.incidentValidation, incidentsController.createNewIncident);
 
 module.exports = router;
