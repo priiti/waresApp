@@ -1,10 +1,11 @@
-const User = require('./../models/User');
-const crypto = require('crypto');
 const HTTPStatus = require('http-status');
+const crypto = require('crypto');
+const User = require('./../models/User');
 
 const { Error } = require('./../utils/errorHandlers');
 const { UserMessage, AuthMessage } = require('./../constants/messages');
 const { signToken, blacklistToken } = require('./../auth/jwt');
+const mail = require('./../utils/mail');
 
 exports.registerUser = async (req, res, next) => {
   try {
@@ -54,6 +55,7 @@ exports.login = async (req, res, next) => {
     if (!isMatch) {
       throw new Error(AuthMessage.LOGIN_FAIL);
     }
+
     res.json({ token: signToken(user) });
   } catch (err) {
     next(err);
@@ -62,6 +64,7 @@ exports.login = async (req, res, next) => {
 
 exports.logout = async (req, res, next) => {
   try {
+    // TODO: Implement redis cache for blacklisted tokens (all scenarios)
     const blacklistedToken = await blacklistToken(req.user);
     if (!blacklistedToken) {
       throw new Error(AuthMessage.UNABLE_TO_BLACKLIST_TOKEN);
@@ -101,10 +104,17 @@ exports.forgotPassword = async (req, res, next) => {
 
     await user.save();
 
-    // const passwordResetUrl =
-    //   `${process.env.SITE_URL}/account/password/${user.login.passwordResetToken}`;
+    const passwordResetUrl =
+      `${process.env.SITE_URL}/account/password/${user.login.passwordResetToken}`;
 
-    // TODO: implement mail sending
+    await mail.sendMail({
+      to: email,
+      subject: 'Password reset',
+      template: {
+        name: 'passwordReset',
+        data: { passwordResetUrl }
+      }
+    });
 
     res.json({ message: resetLinkSentSuccessMessage });
   } catch (err) {
