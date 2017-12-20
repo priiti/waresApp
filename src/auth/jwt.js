@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const jwtSecret = process.env.SECRET;
 const validateJwt = expressJwt({ secret: jwtSecret });
-const logger = require('./logger');
+const logger = require('./../utils/logger');
 const Token = require('./../models/Token');
 const User = require('./../models/User');
 const { NotAuthorizedError, ServerError } = require('./../utils/errorHandlers');
