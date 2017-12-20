@@ -4,7 +4,7 @@ const HTTPStatus = require('http-status');
 
 const { Error } = require('./../utils/errorHandlers');
 const { UserMessage, AuthMessage } = require('./../constants/messages');
-const { signToken, blacklistToken } = require('../utils/jwt');
+const { signToken, blacklistToken } = require('./../auth/jwt');
 
 exports.registerUser = async (req, res, next) => {
   try {
