@@ -1,7 +1,7 @@
 const { body, validationResult, check } = require('express-validator/check');
 const { UnprocessableEntityError } = require('./errorHandlers');
 const { ObjectId } = require('mongodb');
-const { password, user } = require('./ApiConstants');
+const { password, user } = require('./../constants/auth');
 
 exports.isMongoObjectId = objectId => !!ObjectId.isValid(objectId);
 exports.hasInvalidObjectId = (objectIdList) => {
