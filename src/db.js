@@ -21,9 +21,7 @@ mongoose.connection.on('error', (err) => {
   }
 });
 
-const databaseConnectionUri =
-  isTestEnvironment ?
-    MONGODB_URI_TEST : MONGODB_URI;
+const databaseConnectionUri = isTestEnvironment ? MONGODB_URI_TEST : MONGODB_URI;
 
 const connectDatabase = async () => {
   try {
