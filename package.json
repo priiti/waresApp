@@ -4,8 +4,9 @@
   "description": "Wares- Varade registrisüsteem",
   "main": "index.js",
   "scripts": {
-    "dev": "export NODE_ENV=development && nodemon ./src/server.js",
-    "test": "set NODE_ENV=test && mocha ./**/*.test.js -L spec --exit"
+    "start": "pm2-docker start ./src/server.js",
+    "dev": "nodemon ./src/server.js",
+    "test": "export NODE_ENV=test && mocha ./**/*.test.js -L spec --exit"
   },
   "author": "Banana",
   "license": "MIT",
@@ -29,6 +30,7 @@
     "nodemailer": "^4.4.0",
     "on-finished": "^2.3.0",
     "pug": "^2.0.0-rc.4",
+    "redis": "^2.8.0",
     "subclass-error": "^0.1.1",
     "util": "^0.10.3",
     "winston": "^2.4.0"

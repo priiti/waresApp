@@ -73,4 +73,9 @@ router.get('/incidents', incidentsController.getIncidents);
 router.get('/incidents/:id', incidentsController.getIncidentById);
 router.post('/incidents', validator.incidentValidation, incidentsController.createNewIncident);
 
+// Health check
+router.get('/healthz', (req, res) => {
+  res.send('Healthy');
+});
+
 module.exports = router;

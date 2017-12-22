@@ -21,8 +21,14 @@ mongoose.connection.on('error', (err) => {
   }
 });
 
-const databaseConnectionUri =
-  isTestEnvironment ?
-    MONGODB_URI_TEST : MONGODB_URI;
+const databaseConnectionUri = isTestEnvironment ? MONGODB_URI_TEST : MONGODB_URI;
 
-module.exports = mongoose.connect(databaseConnectionUri, { useMongoClient: true });
+const connectDatabase = async () => {
+  try {
+    await mongoose.connect(databaseConnectionUri, { useMongoClient: true });
+  } catch (err) {
+    logger.error(err);
+  }
+};
+
+module.exports = { connectDatabase };
