@@ -1,4 +1,5 @@
 /* globals before, describe */
+require('dotenv').config({ path: '.env' });
 const app = require('./../src/app');
 const logger = require('./../src/utils/logger');
 const request = require('supertest')(app);

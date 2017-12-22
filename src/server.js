@@ -1,5 +1,4 @@
 require('dotenv').config({ path: '.env' });
-
 require('./models/Room');
 require('./models/User');
 require('./models/DeviceStatus');
@@ -14,7 +13,7 @@ const db = require('./db');
     await db;
 
     const server = app.listen(app.get('port'), () => {
-      logger.info(`Server running on ${server.address().port}`);
+      logger.info(`Server started in ${process.env.NODE_ENV} mode, running on ${server.address().port}`);
     });
 
     process.on('uncaughtException', (err) => {

@@ -21,8 +21,12 @@ services:
       - wares-net
     build:
       context: .
+      args:
+        - NODE_ENV=development
     ports:
       - ${PORT}:${PORT}
+      - "5858:5858"
+      - "9229:9229"
     volumes:
       - .:/var/app
       - /var/app/node_modules
@@ -31,6 +35,8 @@ services:
       - wares-redis
     command:
       npm run dev
+    environment:
+     - NODE_ENV=development
 
   wares-redis:
     image: redis:alpine
