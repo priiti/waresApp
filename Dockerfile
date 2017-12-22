@@ -22,6 +22,7 @@ COPY package-lock.json /var/app/package-lock.json
 
 # Install dependencies
 RUN npm install && npm cache clean --force
+RUN npm install pm2 -g
 
 # Set application volume
 VOLUME /var/app
