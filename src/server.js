@@ -10,7 +10,7 @@ const db = require('./db');
 
 (async () => {
   try {
-    await db;
+    await db.connectDatabase();
 
     const server = app.listen(app.get('port'), () => {
       logger.info(`Server started in ${process.env.NODE_ENV} mode, running on ${server.address().port}`);
