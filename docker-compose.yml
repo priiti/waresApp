@@ -1,37 +1,47 @@
 version: "2"
 
 services:
-  WaresMongo:
+  wares-mongo:
     image: mongo:3.4
-    container_name: "WaresMongo"
+    container_name: "wares-mongo"
     networks:
-      - main
+      - wares-net
     environment:
       - MONGO_DATA_DIR=WARES-data:/data/db
     volumes:
       - WARES-data:/data/db
     ports:
-      - 27017:27017
+      - "27017:27017"
     command: mongod --logpath=/var/log/mongodb/mongodb.log --logappend
   
-  WaresNode:
+  wares-node:
     image: wares-be
-    container_name: "WaresNode"
+    container_name: "wares-node"
     networks:
-      - main
-    build: .
+      - wares-net
+    build:
+      context: .
     ports:
       - ${PORT}:${PORT}
     volumes:
       - .:/var/app
       - /var/app/node_modules
     depends_on:
-      - WaresMongo
+      - wares-mongo
+      - wares-redis
     command:
       npm run dev
+
+  wares-redis:
+    image: redis:alpine
+    networks:
+      - wares-net
+    ports:
+      - "6379:6379"
 
 volumes:
   WARES-data:
 
 networks:
-  main:
+  wares-net:
+    driver: bridge
