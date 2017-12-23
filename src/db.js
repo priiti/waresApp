@@ -12,7 +12,7 @@ if (!isTestEnvironment) {
 }
 
 mongoose.connection.on('connected', () => {
-  logger.info('Database connected!');
+  logger.info('Database connected! 💁');
 });
 
 mongoose.connection.on('error', (err) => {
@@ -23,7 +23,7 @@ mongoose.connection.on('error', (err) => {
 
 const databaseConnectionUri = isTestEnvironment ? MONGODB_URI_TEST : MONGODB_URI;
 
-const connectDatabase = async () => {
+exports.connectDatabase = async () => {
   try {
     await mongoose.connect(databaseConnectionUri, { useMongoClient: true });
   } catch (err) {
@@ -31,4 +31,13 @@ const connectDatabase = async () => {
   }
 };
 
-module.exports = { connectDatabase };
+exports.closeDatabaseConnection = async () => {
+  try {
+    await mongoose.connection.close(() => {
+      logger.warn('Database connection closed! ❌');
+    });
+  } catch (err) {
+    logger.error(err);
+  }
+};
+

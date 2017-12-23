@@ -10,11 +10,13 @@ module.exports = (request) => {
     description: 'Portable computer'
   };
 
-  describe('POST: api/devices/types', () => {
+  describe('POST: /api/devices/types', () => {
     it('should create new device type', (done) => {
       request
         .post('/api/devices/types')
         .send(newType)
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
         .expect(201)
         .expect((res) => {
           const { newDeviceType } = res.body;
@@ -35,9 +37,10 @@ module.exports = (request) => {
 
           DeviceType.find({})
             .then((types) => {
-              expect(types).to.have.lengthOf(1);
+              expect(types).to.have.lengthOf(2);
               done();
-            });
+            })
+            .catch(error => done(error));
         });
     });
   });
@@ -49,7 +52,7 @@ module.exports = (request) => {
         .expect(200)
         .expect((res) => {
           const { deviceTypes } = res.body;
-          expect(deviceTypes).to.have.lengthOf(1);
+          expect(deviceTypes).to.have.lengthOf(2);
         })
         .end(done);
     });
