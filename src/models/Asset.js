@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Category = require('./Category');
 
 const assetSchema = new mongoose.Schema({
   device: {
@@ -99,15 +98,6 @@ assetSchema.statics.getAllAssetsData = function () {
     }
   ]);
 };
-
-assetSchema.post('save', async () => {
-  try {
-    const assetsCount = await Asset.count({});
-    await Category.findOneAndUpdate({ name: 'Asset' }, { count: assetsCount });
-  } catch (err) {
-    throw new Error(err);
-  }
-});
 
 const Asset = mongoose.model('Asset', assetSchema);
 module.exports = Asset;
