@@ -1,5 +1,6 @@
 const { expect } = require('chai');
 const mongoose = require('mongoose');
+const { AuthMessage } = require('./../../src/constants/messages');
 
 const User = mongoose.model('User');
 
@@ -10,6 +11,14 @@ module.exports = (request) => {
     email: 'john.example@example.com',
     phoneNumber: '55555555',
     password: 'SomePassword!'
+  };
+
+  const invalidRegistrationDataForNewUser = {
+    firstName: 'John',
+    lastName: 'Example',
+    email: 'john.exampleexample.com',
+    phoneNumber: '55555555',
+    password: '11'
   };
 
   describe('POST: api/auth/local/register', () => {
@@ -49,6 +58,61 @@ module.exports = (request) => {
               expect(count).to.equal(1);
               done();
             });
+        });
+    });
+
+    it('should return 400 Bad Request if invalid registration data', (done) => {
+      request
+        .post('/api/auth/local/register')
+        .send(invalidRegistrationDataForNewUser)
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(422)
+        .end(done);
+    });
+  });
+
+  describe('POST /api/auth/login', () => {
+    const validUser = {
+      email: registrationDataForNewUser.email,
+      password: registrationDataForNewUser.password
+    };
+
+    const invalidUser = {
+      email: 'random@random.com',
+      password: 'random'
+    };
+
+    let validToken = null;
+
+    it('should login with valid email and password, receive token', (done) => {
+      request
+        .post('/api/auth/login')
+        .send(validUser)
+        .set('Accept', 'application/json')
+        .expect(200)
+        .end((err, res) => {
+          if (err) { return done(err); }
+
+          validToken = res.body.token;
+
+          expect(validToken);
+          done();
+        });
+    });
+
+    it('should return 400 Bad Request with error message', (done) => {
+      request
+        .post('/api/auth/login')
+        .send(invalidUser)
+        .set('Accept', 'application/json')
+        .expect(400)
+        .end((err, res) => {
+          if (err) { done(err); }
+
+          const { message } = res.body;
+          expect(message).to.equal(AuthMessage.LOGIN_FAIL);
+          done();
         });
     });
   });
