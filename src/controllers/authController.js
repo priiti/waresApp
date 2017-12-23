@@ -22,7 +22,7 @@ exports.registerUser = async (req, res, next) => {
       throw new Error(UserMessage.DUPLICATE_EMAIL);
     }
 
-    const user = await new User({
+    const user = new User({
       firstName,
       lastName,
       phoneNumber,
@@ -30,13 +30,15 @@ exports.registerUser = async (req, res, next) => {
         email,
         password
       }
-    }).save();
+    });
+
+    await user.save();
 
     if (!user) {
       throw new Error(UserMessage.USER_CREATE_FAIL);
     }
 
-    return res.status(HTTPStatus.OK).json({ message: UserMessage.USER_CREATED });
+    return res.status(HTTPStatus.CREATED).json({ message: UserMessage.USER_CREATED });
   } catch (err) {
     next(err);
   }
@@ -64,9 +66,8 @@ exports.login = async (req, res, next) => {
 
 exports.logout = async (req, res, next) => {
   try {
-    // TODO: Implement redis cache for blacklisted tokens (all scenarios)
-    const blacklistedToken = await blacklistToken(req.user);
-    if (!blacklistedToken) {
+    const isTokenBlacklisted = await blacklistToken(req.user);
+    if (!isTokenBlacklisted) {
       throw new Error(AuthMessage.UNABLE_TO_BLACKLIST_TOKEN);
     }
 

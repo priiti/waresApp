@@ -12,7 +12,7 @@ if (!isTestEnvironment) {
   app.use(morgan('dev'));
 }
 
-app.set('port', process.env.APP_PORT || 8092);
+app.set('port', process.env.PORT);
 
 app.use(expressValidator());
 app.use(bodyParser.json());

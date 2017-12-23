@@ -51,7 +51,7 @@ exports.createNewUser = async (req, res, next) => {
       throw new Error('User was not created!');
     }
 
-    return res.status(HTTPStatus.OK).json({ message: 'User was successfully created.' });
+    return res.status(HTTPStatus.CREATED).json({ message: 'User was successfully created.' });
   } catch (err) {
     next(err);
   }

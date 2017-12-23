@@ -5,7 +5,7 @@ const { Error } = require('./../utils/errorHandlers');
 exports.getRooms = async (req, res, next) => {
   try {
     const rooms = await Room.find({});
-    res.status(HTTPStatus.OK).json({ rooms });
+    res.status(HTTPStatus.OK).json(rooms);
   } catch (err) {
     next(err);
   }
@@ -18,7 +18,7 @@ exports.getRoomById = async (req, res, next) => {
     if (!room) {
       throw new Error('No room found!');
     }
-    res.status(HTTPStatus.OK).json({ room });
+    res.status(HTTPStatus.OK).json(room);
   } catch (err) {
     next(err);
   }

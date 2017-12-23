@@ -6,6 +6,7 @@ const validateJwt = expressJwt({ secret: jwtSecret });
 const logger = require('./../utils/logger');
 const Token = require('./../models/Token');
 const User = require('./../models/User');
+const redis = require('./../utils/redis');
 const { NotAuthorizedError, ServerError } = require('./../utils/errorHandlers');
 
 exports.jwtEnsure = async (req, res, next) => {
@@ -14,7 +15,8 @@ exports.jwtEnsure = async (req, res, next) => {
       throw new NotAuthorizedError();
     }
 
-    const isBlackListedToken = await User.findOne({ token: JSON.stringify(req.user) });
+    // const isBlackListedToken = await User.findOne({ token: JSON.stringify(req.user) });
+    const isBlackListedToken = await redis.get(JSON.stringify(req.user));
     if (isBlackListedToken) {
       logger.error(`${req.user._id} tried blacklisted token`);
       throw new NotAuthorizedError();
@@ -64,16 +66,5 @@ exports.signToken = (user) => {
   return jwt.sign(data, jwtSecret, { expiresIn });
 };
 
-exports.blacklistToken = async (user) => {
-  try {
-    const newToken = new Token({
-      userId: user._id,
-      token: JSON.stringify(user),
-      expires: user.exp * 1000
-    });
-
-    await newToken.save();
-  } catch (err) {
-    throw new Error('Unable to blacklist token.');
-  }
-};
+exports.blacklistToken = async user =>
+  redis.set(JSON.stringify(user), user.id, user.exp - user.iat);

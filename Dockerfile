@@ -9,7 +9,7 @@ ENV NODE_ENV $NODE_ENV
 
 ARG PORT=8092
 ENV PORT $PORT
-EXPOSE $PORT 5858 9229
+EXPOSE $PORT
 
 # Healtcheck whether container is working properly
 HEALTHCHECK CMD curl -fs http://localhost:$PORT/api/healthz || exit 1
