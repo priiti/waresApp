@@ -4,9 +4,11 @@ FROM node:9.3
 # Create directories
 RUN mkdir /var/app
 
+# Application environment, will be overridden to development in docker-compose
 ARG NODE_ENV=production
 ENV NODE_ENV $NODE_ENV
 
+# Application ports
 ARG PORT=8092
 ENV PORT $PORT
 EXPOSE $PORT
