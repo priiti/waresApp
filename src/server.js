@@ -13,7 +13,7 @@ const db = require('./db');
     await db.connectDatabase();
 
     const server = app.listen(app.get('port'), () => {
-      logger.info(`⭐ Server running: ${process.env.NODE_ENV} mode, port: ${server.address().port}`);
+      logger.info(`🌏  Server running: ${process.env.NODE_ENV} mode, port: ${server.address().port}`);
     });
 
     process.on('uncaughtException', (err) => {

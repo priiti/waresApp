@@ -12,7 +12,7 @@ if (!isTestEnvironment) {
 }
 
 mongoose.connection.on('connected', () => {
-  logger.info('Database connected! 💁');
+  logger.info('💁  Database connected!');
 });
 
 mongoose.connection.on('error', (err) => {
