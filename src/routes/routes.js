@@ -7,8 +7,8 @@ const devicesTypesController = require('./../controllers/deviceTypesController')
 const authController = require('./../controllers/authController');
 const userController = require('./../controllers/usersController');
 const incidentsController = require('./../controllers/incidentsController');
-const { jwtEnsure, allowRoles } = require('./../auth/jwt');
-const { ADMIN } = require('./../constants/roles');
+// const { jwtEnsure, allowRoles } = require('./../auth/jwt');
+// const { ADMIN } = require('./../constants/roles');
 
 // Method jwtEnsure makes sure that user is logged / holds valid jwt token
 
@@ -22,7 +22,7 @@ router.post('/assets', validator.assetValidation, assetsController.createNewAsse
 // /**
 //  * Rooms routes
 //  */
-router.get('/rooms', jwtEnsure, roomsController.getRooms);
+router.get('/rooms', roomsController.getRooms);
 router.get('/rooms/:roomId', roomsController.getRoomById);
 router.post('/rooms', validator.roomValidation, roomsController.createNewRoom);
 router.patch('/rooms/:roomId', validator.roomValidation, roomsController.updateRoom);
@@ -49,12 +49,12 @@ router.post('/auth/forgot', validator.passwordResetEmail, authController.forgotP
 router.get('/auth/reset/:token', authController.validatePasswordResetToken);
 router.post('/auth/reset/:token', validator.passwordResetMatchValidation, authController.updatePassword);
 router.post('/auth/login', authController.login);
-router.post('/auth/logout', jwtEnsure, authController.logout);
+router.post('/auth/logout', authController.logout);
 
 // /**
 //  * Users routes
 //  */
-router.get('/users', jwtEnsure, allowRoles([ADMIN]), userController.getUsers);
+router.get('/users', userController.getUsers);
 router.get('/users/:userId', userController.getUserById);
 router.post('/users', validator.createUserValidation, userController.createNewUser);
 router.patch('/users/:userId', validator.editUser, userController.updateUser);
