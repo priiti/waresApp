@@ -15,10 +15,11 @@ const userSchema = new mongoose.Schema({
     passwordResetExpires: Date,
     passwordUpdatedAt: { type: Date, default: null }
   },
-  roles: [{
+  roles: {
     type: String,
-    enum: Object.values(roles)
-  }],
+    enum: Object.values(roles),
+    default: [roles.USER]
+  },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date },
   deletedAt: { type: Date, default: null }

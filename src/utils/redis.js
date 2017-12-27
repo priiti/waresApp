@@ -2,7 +2,7 @@ const Promise = require('bluebird');
 const redis = require('redis');
 const logger = require('./logger');
 
-Promise.promisifyAll(redis.createClient.prototype);
+Promise.promisifyAll(redis.RedisClient.prototype);
 Promise.promisifyAll(redis.Multi.prototype);
 
 const client = redis.createClient({
@@ -11,7 +11,7 @@ const client = redis.createClient({
 });
 
 client.on('connect', () => {
-  logger.info('Redis connected.');
+  logger.info('⚡  Redis connected.');
 });
 
 client.on('error', (err) => {

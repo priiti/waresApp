@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const routes = require('./routes/routes');
 const { notFound, errorHandler } = require('./utils/errorHandlers');
+const { jwtCheck } = require('./auth/jwt');
 
 const app = express();
 const isTestEnvironment = process.env.NODE_ENV === 'test';
@@ -18,6 +19,6 @@ app.use(expressValidator());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/api', routes, notFound, errorHandler);
+app.use('/api', jwtCheck, routes, notFound, errorHandler);
 
 module.exports = app;

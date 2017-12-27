@@ -91,7 +91,7 @@ exports.passwordResetEmail = [
 exports.passwordResetMatchValidation = [
   body('password').isLength({ min: password.PASSWORD_MIN_LENGTH })
     .withMessage(`Password must be at least ${password.PASSWORD_MIN_LENGTH} characters long.`),
-  check('password-confirm')
+  check('password-confirm', 'Passwords does not match. Please make sure that given passwords match.')
     .exists()
     .custom((value, { req }) => value === req.body.password),
   errorCheck
