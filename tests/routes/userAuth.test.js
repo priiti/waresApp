@@ -94,7 +94,7 @@ module.exports = (request) => {
         });
     });
 
-    it('should return 400 Bad Request with error message', (done) => {
+    it('should return 400 Bad Request when wrong email/password', (done) => {
       request
         .post('/api/auth/login')
         .send(invalidUser)

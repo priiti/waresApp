@@ -1,4 +1,3 @@
-/* globals before, describe */
 require('dotenv').config({ path: '.env' });
 const path = require('path');
 const fs = require('fs');
@@ -41,8 +40,8 @@ describe('API TESTS', () => {
     await insertTestData();
   });
 
-  describe('Device types:', () => require('./routes/deviceType.test')(request));
   describe('User:', () => require('./routes/userAuth.test')(request));
+  describe('Device types:', () => require('./routes/deviceType.test')(request));
   describe('Room:', () => require('./routes/room.test')(request));
 
   after(async () => {

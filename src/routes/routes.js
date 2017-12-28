@@ -7,7 +7,7 @@ const devicesTypesController = require('./../controllers/deviceTypesController')
 const authController = require('./../controllers/authController');
 const userController = require('./../controllers/usersController');
 const incidentsController = require('./../controllers/incidentsController');
-// const { jwtEnsure, allowRoles } = require('./../auth/jwt');
+const { jwtEnsure, allowRoles } = require('./../auth/jwt');
 // const { ADMIN } = require('./../constants/roles');
 
 // Method jwtEnsure makes sure that user is logged / holds valid jwt token
@@ -37,9 +37,9 @@ router.post('/devices/statuses', validator.deviceStatusValidation, devicesStatus
 // /**
 //  * Device types routes
 //  */
-router.get('/devices/types', devicesTypesController.getDeviceTypes);
-router.get('/devices/types/:typeId', devicesTypesController.getDeviceTypeById);
-router.post('/devices/types', validator.deviceTypesValidation, devicesTypesController.createNewDeviceType);
+router.get('/devices/types', jwtEnsure, devicesTypesController.getDeviceTypes);
+router.get('/devices/types/:typeId', jwtEnsure, devicesTypesController.getDeviceTypeById);
+router.post('/devices/types', jwtEnsure, validator.deviceTypesValidation, devicesTypesController.createNewDeviceType);
 
 /**
  * Auth routes
