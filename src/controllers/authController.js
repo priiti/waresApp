@@ -5,6 +5,7 @@ const User = require('./../models/User');
 const { Error } = require('./../utils/errorHandlers');
 const { UserMessage, AuthMessage } = require('./../constants/messages');
 const { signToken, blacklistToken } = require('./../auth/jwt');
+const redis = require('./../utils/redis');
 const mail = require('./../utils/mail');
 
 exports.registerUser = async (req, res, next) => {
@@ -58,6 +59,8 @@ exports.login = async (req, res, next) => {
       throw new Error(AuthMessage.LOGIN_FAIL);
     }
 
+    await redis.del(user._id.toString());
+
     res.json({ token: signToken(user) });
   } catch (err) {
     next(err);
@@ -88,8 +91,9 @@ exports.forgotPassword = async (req, res, next) => {
 
     const { email, passwordResetExpires } = user.login;
 
+    // Restrict users by sending spam, password reset link after every 5 minutes
     const passwordResetSentTimestamp =
-      passwordResetExpires - parseInt(process.env.PASSWORD_RESET_EXPIRES, 10) > Date.now();
+      passwordResetExpires - parseInt(process.env.PASSWORD_RESET_TOKEN_EXPIRES, 10);
 
     if (passwordResetSentTimestamp &&
         passwordResetSentTimestamp +
@@ -100,12 +104,13 @@ exports.forgotPassword = async (req, res, next) => {
     user.login = {
       ...user.login,
       passwordResetToken: crypto.randomBytes(20).toString('hex'),
-      passwordResetExpires: Date.now() + parseInt(process.env.PASSWORD_RESET_EXPIRES, 10)
+      passwordResetExpires: Date.now() + parseInt(process.env.PASSWORD_RESET_TOKEN_EXPIRES, 10)
     };
 
     await user.save();
 
-    const passwordResetUrl =
+    // Send email to user with password reset link
+    const passwordResetURL =
       `${process.env.SITE_URL}/account/password/${user.login.passwordResetToken}`;
 
     await mail.sendMail({
@@ -113,7 +118,7 @@ exports.forgotPassword = async (req, res, next) => {
       subject: 'Password reset',
       template: {
         name: 'passwordReset',
-        data: { passwordResetUrl }
+        data: { passwordResetURL }
       }
     });
 
@@ -151,15 +156,18 @@ exports.updatePassword = async (req, res, next) => {
       throw new Error(UserMessage.PASSWORD_RESET_EXP_INVALID);
     }
 
+    const passwordUpdateDateMoment = Date.now();
+
     user.login = {
       ...user.login,
       password: req.body.password,
       passwordResetToken: undefined,
       passwordResetExpires: undefined,
-      passwordUpdatedAt: Date.now()
+      passwordUpdatedAt: passwordUpdateDateMoment
     };
 
     await user.save();
+    await redis.set((user._id).toString(), passwordUpdateDateMoment);
 
     res.json({ message: UserMessage.PASSWORD_RESET_SUCCESS });
   } catch (err) {
