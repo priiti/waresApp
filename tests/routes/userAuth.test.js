@@ -29,17 +29,18 @@ module.exports = (request) => {
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(201)
-        .end((err, res) => {
-          if (err) { return done(err); }
-
-          User.findOne({ 'login.email': registrationDataForNewUser.email })
-            .then((user) => {
-              expect(user).property('firstName').to.equal(registrationDataForNewUser.firstName);
-              expect(user).property('lastName').to.equal(registrationDataForNewUser.lastName);
-              expect(user.login).property('email').to.equal(registrationDataForNewUser.email);
-              expect(user).property('phoneNumber').to.equal(registrationDataForNewUser.phoneNumber);
-              done();
-            });
+        .end(async (err, res) => {
+          try {
+            if (err) { throw new Error(err); }
+            const newRegisteredUser = await User.findOne({ 'login.email': registrationDataForNewUser.email });
+            expect(newRegisteredUser).property('firstName').to.equal(registrationDataForNewUser.firstName);
+            expect(newRegisteredUser).property('lastName').to.equal(registrationDataForNewUser.lastName);
+            expect(newRegisteredUser.login).property('email').to.equal(registrationDataForNewUser.email);
+            expect(newRegisteredUser).property('phoneNumber').to.equal(registrationDataForNewUser.phoneNumber);
+            done();
+          } catch (error) {
+            done(error);
+          }
         });
     });
 
@@ -50,15 +51,7 @@ module.exports = (request) => {
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(400)
-        .end((err, res) => {
-          if (err) { return done(err); }
-
-          User.findOne({ 'login.email': registrationDataForNewUser.email }).count()
-            .then((count) => {
-              expect(count).to.equal(1);
-              done();
-            });
-        });
+        .end(done);
     });
 
     it('should return 400 Bad Request if invalid registration data', (done) => {
