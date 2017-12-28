@@ -7,7 +7,7 @@ const devicesTypesController = require('./../controllers/deviceTypesController')
 const authController = require('./../controllers/authController');
 const userController = require('./../controllers/usersController');
 const incidentsController = require('./../controllers/incidentsController');
-const { jwtEnsure, allowRoles } = require('./../auth/jwt');
+const { jwtEnsure } = require('./../auth/jwt');
 // const { ADMIN } = require('./../constants/roles');
 
 // Method jwtEnsure makes sure that user is logged / holds valid jwt token
