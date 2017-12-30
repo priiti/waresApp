@@ -18,14 +18,15 @@ module.exports = (request) => {
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(201)
-        .end((err, res) => {
-          if (err) { return done(err); }
-
-          Room.findOne({ name: newRoom.name })
-            .then((room) => {
-              expect(room).property('name').to.equal(newRoom.name);
-              done();
-            });
+        .end(async (err, res) => {
+          try {
+            if (err) { throw new Error(err); }
+            const newCreatedRoom = await Room.findOne({ name: newRoom.name });
+            expect(newCreatedRoom).property('name').to.equal(newRoom.name);
+            done();
+          } catch (error) {
+            done(error);
+          }
         });
     });
 
