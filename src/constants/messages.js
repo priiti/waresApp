@@ -28,3 +28,12 @@ exports.IncidentMessage = {
   INCIDENT_CREATE_FAIL: 'Incident creation failed. Please check input data!',
   INCIDENT_CREATED: 'Incident was successfully created'
 };
+
+exports.CRUDMessages = {
+  NOT_FOUND: route => `${route} not found.`,
+  SUCCESSFULLY_CREATED: route => `${route} successfully created.`,
+  SUCCESSFULLY_UPDATED: route => `${route} successfully updated.`,
+  SUCCESSFULLY_DELETED: route => `${route} successfully deleted.`,
+  UPDATE_FAIL: route => `${route} not updated.`,
+  DUPLICATE: (route, givenValue) => `${route} '${givenValue}' already exists!`
+};
