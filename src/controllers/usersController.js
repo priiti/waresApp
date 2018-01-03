@@ -1,5 +1,7 @@
 const HTTPStatus = require('http-status');
 const User = require('./../models/User');
+const { CRUDMessages } = require('./../constants/messages');
+const { isMongoObjectId } = require('./../utils/validator');
 
 exports.getUsers = async (req, res, next) => {
   try {
@@ -83,6 +85,24 @@ exports.updateUser = async (req, res, next) => {
     }
 
     res.status(HTTPStatus.OK).json({ message: 'User successfully updated!' });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deleteUser = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    if (!userId || !isMongoObjectId(userId)) {
+      throw new Error(CRUDMessages.NOT_FOUND('User'));
+    }
+
+    const user = await User.findByIdAndRemove(userId);
+    if (!user) {
+      throw new Error(CRUDMessages.NOT_FOUND('User'));
+    }
+
+    res.status(HTTPStatus.OK).json({ message: CRUDMessages.SUCCESSFULLY_DELETED('User') });
   } catch (err) {
     next(err);
   }
