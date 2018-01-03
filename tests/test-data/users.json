@@ -1,0 +1,24 @@
+[
+  {
+    "firstName": "admin",
+    "lastName": "admin",
+    "profileImage": "",
+    "phoneNumber": "55555555",
+    "login": {
+      "email": "admin@test.com",
+      "password": "adminPassword!"
+    },
+    "roles": ["admin"]
+  },
+  {
+    "firstName": "TestUser",
+    "lastName": "TestUser",
+    "profileImage": "",
+    "phoneNumber": "55555555",
+    "login": {
+      "email": "testUser@test.com",
+      "password": "testUserPassword!"
+    },
+    "roles": ["user"]
+  }
+]

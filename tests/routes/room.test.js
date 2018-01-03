@@ -10,7 +10,7 @@ module.exports = (request) => {
     description: 'Keemia klass'
   };
 
-  describe('POST /api/rooms', () => {
+  describe('POST: /api/rooms', () => {
     it('should create new room', (done) => {
       request
         .post('/api/rooms')
@@ -41,7 +41,7 @@ module.exports = (request) => {
     });
   });
 
-  describe('GET /api/rooms', () => {
+  describe('GET: /api/rooms', () => {
     let room = null;
 
     it('should return rooms', (done) => {

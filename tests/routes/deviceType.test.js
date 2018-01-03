@@ -4,9 +4,18 @@ const mongoose = require('mongoose');
 const DeviceType = mongoose.model('DeviceType');
 
 module.exports = (request) => {
-  const registeredUser = {
-    email: 'john.example@example.com',
-    password: 'SomePassword!'
+  /**
+   * User has to be logged in to add device type
+   * Only admin is allowed to add device types
+   */
+  const adminUser = {
+    email: 'admin@test.com',
+    password: 'adminPassword!'
+  };
+
+  const testUser = {
+    email: 'testUser@test.com',
+    password: 'testUserPassword!'
   };
 
   const newType = {
@@ -31,7 +40,7 @@ module.exports = (request) => {
     it('should login user and receive JWT token', (done) => {
       request
         .post('/api/auth/login')
-        .send(registeredUser)
+        .send(adminUser)
         .set('Accept', 'application/json')
         .expect(200)
         .end(async (err, res) => {
@@ -78,7 +87,7 @@ module.exports = (request) => {
     });
   });
 
-  describe('GET: api/devices/types', () => {
+  describe('GET: /api/devices/types', () => {
     it('should return device types', (done) => {
       request
         .get('/api/devices/types')
@@ -97,7 +106,7 @@ module.exports = (request) => {
     });
   });
 
-  describe('GET api/devices/types/:typeId', () => {
+  describe('GET: /api/devices/types/:typeId', () => {
     it('should return device type by typeId', (done) => {
       request
         .get(`/api/devices/types/${newType._id}`)
@@ -114,6 +123,78 @@ module.exports = (request) => {
             done(error);
           }
         });
+    });
+  });
+
+  describe('POST: api/auth/logout', () => {
+    it('should log user (admin) out', (done) => {
+      request
+        .post('/api/auth/logout')
+        .set({ Authorization: `Bearer ${validToken}`, Accept: 'application/json' })
+        .expect(200)
+        .end(done);
+    });
+  });
+
+  const newTypeSecond = {
+    name: 'Scanner',
+    description: 'For scanning documents'
+  };
+
+  /**
+   * Blacklisted token (after log out will not work)
+   */
+
+  describe('POST: /api/devices/types', () => {
+    it('should return 401 Unauthorized as token is blacklisted', (done) => {
+      request
+        .post('/api/devices/types')
+        .send(newTypeSecond)
+        .set({ Authorization: `Bearer ${validToken}`, Accept: 'application/json' })
+        .expect('Content-Type', /json/)
+        .expect(401)
+        .end(done);
+    });
+  });
+
+  describe('POST: /api/auth/login', () => {
+    it('should login user and receive JWT token', (done) => {
+      request
+        .post('/api/auth/login')
+        .send(testUser)
+        .set('Accept', 'application/json')
+        .expect(200)
+        .end(async (err, res) => {
+          try {
+            if (err) { throw new Error(err); }
+            const { token } = res.body;
+            validToken = token;
+            done();
+          } catch (error) {
+            done(error);
+          }
+        });
+    });
+  });
+
+  describe('POST: /api/devices/types', () => {
+    it('should return 401 Unauthorized when not being admin', (done) => {
+      request
+        .post('/api/devices/types')
+        .send(newType)
+        .set({ Authorization: `Bearer ${validToken}`, Accept: 'application/json' })
+        .expect('Content-Type', /json/)
+        .expect(401)
+        .end(done);
+    });
+  });
+
+  describe('POST: /api/auth/logout', () => {
+    it('should log user (admin) out', () => {
+      request
+        .post('/api/auth/logout')
+        .set({ Authorization: `Bearer ${validToken}`, Accept: 'application/json' })
+        .expect(200);
     });
   });
 };
