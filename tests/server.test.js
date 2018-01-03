@@ -15,7 +15,7 @@ const createObjectFromJSON = filename =>
 
 const deviceTypesSeedData = createObjectFromJSON('./test-data/deviceType.json');
 const roomsSeedData = createObjectFromJSON('./test-data/rooms.json');
-
+const usersSeedData = createObjectFromJSON('./test-data/users.json');
 
 const clearTestDatabase = async () => {
   try {
@@ -30,7 +30,8 @@ const clearTestDatabase = async () => {
 const insertTestData = () =>
   Promise.all([
     DeviceType.create(deviceTypesSeedData),
-    Room.create(roomsSeedData)
+    Room.create(roomsSeedData),
+    User.create(usersSeedData)
   ]);
 
 describe('API TESTS', () => {
@@ -40,7 +41,8 @@ describe('API TESTS', () => {
     await insertTestData();
   });
 
-  describe('User:', () => require('./routes/userAuth.test')(request));
+  describe('User auth:', () => require('./routes/userAuth.test')(request));
+  describe('User management:', () => require('./routes/userManagement')(request));
   describe('Device types:', () => require('./routes/deviceType.test')(request));
   describe('Room:', () => require('./routes/room.test')(request));
 
