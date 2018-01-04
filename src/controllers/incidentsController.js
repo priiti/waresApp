@@ -1,7 +1,7 @@
 const HTTPStatus = require('http-status');
 const Incident = require('../models/Incident');
 const { IncidentMessage } = require('../constants/messages');
-const { Error } = require('./../utils/errorHandlers');
+const { Error, NotFoundError } = require('./../utils/errorHandlers');
 const { CRUDMessages } = require('./../constants/messages');
 const { isMongoObjectId } = require('./../utils/validator');
 
@@ -9,7 +9,7 @@ exports.getIncidents = async (req, res, next) => {
   try {
     const incidents = await Incident.find({});
     if (!incidents) {
-      throw new Error(IncidentMessage.INCIDENTS_NOT_FOUND);
+      throw new NotFoundError(IncidentMessage.INCIDENTS_NOT_FOUND);
     }
 
     res.status(HTTPStatus.OK).json(incidents);
@@ -22,11 +22,11 @@ exports.getIncidentById = async (req, res, next) => {
   try {
     const { incidentId } = req.params;
     if (!isMongoObjectId(incidentId)) {
-      throw new Error(IncidentMessage.INCIDENT_NOT_FOUND);
+      throw new NotFoundError(IncidentMessage.INCIDENT_NOT_FOUND);
     }
     const incident = await Incident.findById(incidentId);
     if (!incident) {
-      throw new Error(IncidentMessage.INCIDENT_NOT_FOUND);
+      throw new NotFoundError(IncidentMessage.INCIDENT_NOT_FOUND);
     }
 
     res.status(HTTPStatus.OK).json(incident);
@@ -64,12 +64,12 @@ exports.deleteIncident = async (req, res, next) => {
   try {
     const { incidentId } = req.params;
     if (!incidentId || !isMongoObjectId(incidentId)) {
-      throw new Error(CRUDMessages.NOT_FOUND('Incident'));
+      throw new NotFoundError(CRUDMessages.NOT_FOUND('Incident'));
     }
 
     const incident = await Incident.findByIdAndRemove(incidentId);
     if (!incident) {
-      throw new Error(CRUDMessages.NOT_FOUND('Incident'));
+      throw new Error(CRUDMessages.DELETE_FAIL('Incident'));
     }
 
     res.status(HTTPStatus.OK).json({ message: CRUDMessages.SUCCESSFULLY_DELETED('Incident') });
