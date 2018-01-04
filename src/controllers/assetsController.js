@@ -3,6 +3,7 @@ const Device = require('./../models/Device');
 const HTTPStatus = require('http-status');
 const { isMongoObjectId, hasInvalidObjectId } = require('./../utils/validator');
 const { AssetMessage } = require('./../constants/messages');
+const { NotFoundError, Error } = require('./../utils/errorHandlers');
 
 exports.getAssets = async (req, res, next) => {
   try {
@@ -19,7 +20,7 @@ exports.getAssetById = async (req, res, next) => {
     const { assetId } = req.params;
 
     if (!isMongoObjectId(assetId)) {
-      throw new Error(AssetMessage.ASSET_NOT_FOUND);
+      throw new NotFoundError(AssetMessage.ASSET_NOT_FOUND);
     }
 
     const asset = await Asset.findOne({ _id: assetId })
@@ -40,7 +41,7 @@ exports.getAssetById = async (req, res, next) => {
         select: 'firstName lastName fullName'
       });
     if (!asset) {
-      throw new Error(AssetMessage.ASSET_NOT_FOUND);
+      throw new NotFoundError(AssetMessage.ASSET_NOT_FOUND);
     }
 
     res.status(HTTPStatus.OK).json({ asset });
@@ -89,11 +90,3 @@ exports.createNewAsset = async (req, res, next) => {
     next(err);
   }
 };
-
-// exports.updateAsset = async (req, res, next) => {
-//   try {
-//     res.status(206).json({ message: AssetMessage.ASSET_UPDATED });
-//   } catch (err) {
-//     next(err);
-//   }
-// };

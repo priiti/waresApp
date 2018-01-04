@@ -1,6 +1,6 @@
 const HTTPStatus = require('http-status');
 const DeviceType = require('./../models/DeviceType');
-const { Error } = require('./../utils/errorHandlers');
+const { Error, NotFoundError } = require('./../utils/errorHandlers');
 const { CRUDMessages } = require('./../constants/messages');
 const { isMongoObjectId } = require('./../utils/validator');
 
@@ -20,7 +20,7 @@ exports.getDeviceTypeById = async (req, res, next) => {
 
     const deviceType = await DeviceType.findById(typeId);
     if (!deviceType) {
-      throw new Error(CRUDMessages.NOT_FOUND('Device type'));
+      throw new NotFoundError(CRUDMessages.NOT_FOUND('Device type'));
     }
 
     res.status(HTTPStatus.OK).json({ deviceType });
@@ -51,7 +51,7 @@ exports.updateDeviceType = async (req, res, next) => {
   try {
     const { typeId } = req.params;
     if (!typeId || !isMongoObjectId(typeId)) {
-      throw new Error(CRUDMessages.NOT_FOUND('Device type'));
+      throw new NotFoundError(CRUDMessages.NOT_FOUND('Device type'));
     }
 
     const {
@@ -79,12 +79,12 @@ exports.deleteDeviceType = async (req, res, next) => {
   try {
     const { typeId } = req.params;
     if (!typeId || !isMongoObjectId(typeId)) {
-      throw new Error(CRUDMessages.NOT_FOUND('Device type'));
+      throw new NotFoundError(CRUDMessages.NOT_FOUND('Device type'));
     }
 
     const deviceType = await DeviceType.findByIdAndRemove(typeId);
     if (!deviceType) {
-      throw new Error(CRUDMessages.NOT_FOUND('Device type'));
+      throw new Error(CRUDMessages.DELETE_FAIL('Device type'));
     }
 
     res.status(HTTPStatus.OK).json({ message: CRUDMessages.SUCCESSFULLY_DELETED('Device type') });

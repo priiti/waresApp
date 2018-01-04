@@ -64,8 +64,8 @@ router.post('/auth/logout', jwtEnsure, authController.logout);
 /**
  * Users routes
 */
-router.get('/users', jwtEnsure, allowRoles([ADMIN]), userController.getUsers);
-router.get('/users/:userId', jwtEnsure, allowRoles([ADMIN]), userController.getUserById);
+router.get('/users', userController.getUsers);
+router.get('/users/:userId', userController.getUserById);
 router.post('/users', jwtEnsure, allowRoles([ADMIN]), validator.createUserValidation, userController.createNewUser);
 router.patch('/users/:userId', jwtEnsure, allowRoles([ADMIN]), validator.editUser, userController.updateUser);
 router.delete('/users/:userId', jwtEnsure, allowRoles([ADMIN]), userController.deleteUser);

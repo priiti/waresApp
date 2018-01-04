@@ -2,6 +2,7 @@ const HTTPStatus = require('http-status');
 const DeviceStatus = require('./../models/DeviceStatus');
 const { CRUDMessages } = require('./../constants/messages');
 const { isMongoObjectId } = require('./../utils/validator');
+const { Error, NotFoundError } = require('./../utils/errorHandlers');
 
 exports.getDeviceStatuses = async (req, res, next) => {
   try {
@@ -19,7 +20,7 @@ exports.getDeviceStatusById = async (req, res, next) => {
     const deviceStatus = await DeviceStatus.findById(statusId);
 
     if (!deviceStatus) {
-      throw new Error(CRUDMessages.NOT_FOUND('Device status'));
+      throw new NotFoundError(CRUDMessages.NOT_FOUND('Device status'));
     }
     res.status(HTTPStatus.OK).json({ deviceStatus });
   } catch (err) {
@@ -49,7 +50,7 @@ exports.updateDeviceStatus = async (req, res, next) => {
   try {
     const { statusId } = req.params;
     if (!statusId || !isMongoObjectId(statusId)) {
-      throw new Error(CRUDMessages.NOT_FOUND('Device status'));
+      throw new NotFoundError(CRUDMessages.NOT_FOUND('Device status'));
     }
 
     const {
@@ -77,12 +78,12 @@ exports.deleteDeviceStatus = async (req, res, next) => {
   try {
     const { statusId } = req.params;
     if (!statusId || !isMongoObjectId(statusId)) {
-      throw new Error(CRUDMessages.NOT_FOUND('Device status'));
+      throw new NotFoundError(CRUDMessages.NOT_FOUND('Device status'));
     }
 
     const deviceStatus = await DeviceStatus.findByIdAndRemove(statusId);
     if (!deviceStatus) {
-      throw new Error(CRUDMessages.NOT_FOUND('Device status'));
+      throw new Error(CRUDMessages.DELETE_FAIL('Device status'));
     }
 
     res.status(HTTPStatus.OK).json({ message: CRUDMessages.SUCCESSFULLY_DELETED('Device status') });

@@ -2,6 +2,7 @@ const HTTPStatus = require('http-status');
 const User = require('./../models/User');
 const { CRUDMessages } = require('./../constants/messages');
 const { isMongoObjectId } = require('./../utils/validator');
+const { NotFoundError, Error } = require('./../utils/errorHandlers');
 
 exports.getUsers = async (req, res, next) => {
   try {
@@ -16,8 +17,15 @@ exports.getUsers = async (req, res, next) => {
 exports.getUserById = async (req, res, next) => {
   try {
     const { userId } = req.params;
-    const user =
-      await User.findById(userId, 'firstName lastName phoneNumber login.email');
+    if (!userId || !isMongoObjectId(userId)) {
+      throw new NotFoundError(CRUDMessages.NOT_FOUND('User'));
+    }
+
+    const user = await User.findById(userId, 'firstName lastName phoneNumber login.email');
+    if (!user) {
+      throw new NotFoundError(CRUDMessages.NOT_FOUND('User'));
+    }
+
     res.json({ user });
   } catch (err) {
     next(err);
@@ -36,7 +44,7 @@ exports.createNewUser = async (req, res, next) => {
 
     const existingUser = await User.findOne({ 'login.email': email });
     if (existingUser) {
-      throw new Error(`Account with email address ${email} already exists.`);
+      throw new Error(CRUDMessages.DUPLICATE('User', email));
     }
 
     const user = await new User({
@@ -50,10 +58,10 @@ exports.createNewUser = async (req, res, next) => {
     }).save();
 
     if (!user) {
-      throw new Error('User was not created!');
+      throw new Error(CRUDMessages.CREATE_FAIL('User'));
     }
 
-    return res.status(HTTPStatus.CREATED).json({ message: 'User was successfully created.' });
+    return res.status(HTTPStatus.CREATED).json({ message: CRUDMessages.SUCCESSFULLY_CREATED('User') });
   } catch (err) {
     next(err);
   }
@@ -81,10 +89,10 @@ exports.updateUser = async (req, res, next) => {
     );
 
     if (!room) {
-      throw new Error('User was not updated!');
+      throw new Error(CRUDMessages.UPDATE_FAIL('User'));
     }
 
-    res.status(HTTPStatus.OK).json({ message: 'User successfully updated!' });
+    res.status(HTTPStatus.OK).json({ message: CRUDMessages.SUCCESSFULLY_UPDATED('User') });
   } catch (err) {
     next(err);
   }
@@ -94,12 +102,12 @@ exports.deleteUser = async (req, res, next) => {
   try {
     const { userId } = req.params;
     if (!userId || !isMongoObjectId(userId)) {
-      throw new Error(CRUDMessages.NOT_FOUND('User'));
+      throw new NotFoundError(CRUDMessages.NOT_FOUND('User'));
     }
 
     const user = await User.findByIdAndRemove(userId);
     if (!user) {
-      throw new Error(CRUDMessages.NOT_FOUND('User'));
+      throw new Error(CRUDMessages.DELETE_FAIL('User'));
     }
 
     res.status(HTTPStatus.OK).json({ message: CRUDMessages.SUCCESSFULLY_DELETED('User') });

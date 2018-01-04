@@ -35,5 +35,7 @@ exports.CRUDMessages = {
   SUCCESSFULLY_UPDATED: route => `${route} successfully updated.`,
   SUCCESSFULLY_DELETED: route => `${route} successfully deleted.`,
   UPDATE_FAIL: route => `${route} not updated.`,
+  CREATE_FAIL: route => `${route} not created.`,
+  DELETE_FAIL: route => `${route} not created.`,
   DUPLICATE: (route, givenValue) => `${route} '${givenValue}' already exists!`
 };
