@@ -26,6 +26,7 @@ module.exports = (request) => {
         .post('/api/auth/login')
         .send(adminUser)
         .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
         .expect(200)
         .end(async (err, res) => {
           try {

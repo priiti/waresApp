@@ -2,5 +2,17 @@
   {
     "name": "Projector",
     "description": "Device to show content on wall"
+  },
+  {
+    "name": "Tablet",
+    "description": "Smart device gadget"
+  },
+  {
+    "name": "Keyboard",
+    "description": "Keyboard for desktop computers"
+  },
+  {
+    "name": "Mouse",
+    "description": "Mouse for desktop computers"
   }
 ]

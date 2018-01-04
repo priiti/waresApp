@@ -77,12 +77,12 @@ exports.updateDeviceType = async (req, res, next) => {
 
 exports.deleteDeviceType = async (req, res, next) => {
   try {
-    const { statusId } = req.params;
-    if (!statusId || !isMongoObjectId(statusId)) {
+    const { typeId } = req.params;
+    if (!typeId || !isMongoObjectId(typeId)) {
       throw new Error(CRUDMessages.NOT_FOUND('Device type'));
     }
 
-    const deviceType = await DeviceType.findByIdAndRemove(statusId);
+    const deviceType = await DeviceType.findByIdAndRemove(typeId);
     if (!deviceType) {
       throw new Error(CRUDMessages.NOT_FOUND('Device type'));
     }

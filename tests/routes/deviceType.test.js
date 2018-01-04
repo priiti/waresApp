@@ -19,6 +19,11 @@ module.exports = (request) => {
   };
 
   const newType = {
+    name: 'Laptops',
+    description: 'Portable computer'
+  };
+
+  const updatedType = {
     name: 'Laptop',
     description: 'Portable computer'
   };
@@ -42,6 +47,7 @@ module.exports = (request) => {
         .post('/api/auth/login')
         .send(adminUser)
         .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
         .expect(200)
         .end(async (err, res) => {
           try {
@@ -81,6 +87,7 @@ module.exports = (request) => {
       request
         .post('/api/devices/types')
         .set({ Authorization: `Bearer ${validToken}`, Accept: 'application/json' })
+        .expect('Content-Type', /json/)
         .send(newType)
         .expect(400)
         .end(done);
@@ -92,12 +99,14 @@ module.exports = (request) => {
       request
         .get('/api/devices/types')
         .set({ Authorization: `Bearer ${validToken}`, Accept: 'application/json' })
+        .expect('Content-Type', /json/)
         .expect(200)
         .end(async (err, res) => {
           try {
             if (err) { throw new Error(err); }
+            const totalDeviceTypesCount = await DeviceType.find().count();
             const { deviceTypes } = res.body;
-            expect(deviceTypes).to.have.lengthOf(2);
+            expect(deviceTypes).to.have.lengthOf(totalDeviceTypesCount);
             done();
           } catch (error) {
             done(error);
@@ -111,6 +120,7 @@ module.exports = (request) => {
       request
         .get(`/api/devices/types/${newType._id}`)
         .set({ Authorization: `Bearer ${validToken}`, Accept: 'application/json' })
+        .expect('Content-Type', /json/)
         .expect(200)
         .end(async (err, res) => {
           try {
@@ -126,11 +136,54 @@ module.exports = (request) => {
     });
   });
 
+  describe('PATCH: /api/devices/types/:typeId', () => {
+    it('should update device type', (done) => {
+      request
+        .patch(`/api/devices/types/${newType._id}`)
+        .send(updatedType)
+        .set({ Authorization: `Bearer ${validToken}`, Accept: 'application/json' })
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(async (err, res) => {
+          try {
+            if (err) { throw new Error(err); }
+            const updatedDeviceType = await DeviceType.findById(newType._id);
+            expect(updatedDeviceType).property('name').to.equal(updatedType.name);
+            expect(updatedDeviceType).property('description').to.equal(updatedType.description);
+            done();
+          } catch (error) {
+            done(error);
+          }
+        });
+    });
+  });
+
+  describe('DELETE: /api/devices/types/:typeId', () => {
+    it('should delete device type', (done) => {
+      request
+        .delete(`/api/devices/types/${newType._id}`)
+        .set({ Authorization: `Bearer ${validToken}`, Accept: 'application/json' })
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(async (err, res) => {
+          try {
+            if (err) { throw new Error(err); }
+            const deviceType = await DeviceType.findById(newType._id);
+            expect(deviceType).to.be.a('null');
+            done();
+          } catch (error) {
+            done(error);
+          }
+        });
+    });
+  });
+
   describe('POST: api/auth/logout', () => {
     it('should log user (admin) out', (done) => {
       request
         .post('/api/auth/logout')
         .set({ Authorization: `Bearer ${validToken}`, Accept: 'application/json' })
+        .expect('Content-Type', /json/)
         .expect(200)
         .end(done);
     });
@@ -163,6 +216,7 @@ module.exports = (request) => {
         .post('/api/auth/login')
         .send(testUser)
         .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
         .expect(200)
         .end(async (err, res) => {
           try {
@@ -194,6 +248,7 @@ module.exports = (request) => {
       request
         .post('/api/auth/logout')
         .set({ Authorization: `Bearer ${validToken}`, Accept: 'application/json' })
+        .expect('Content-Type', /json/)
         .expect(200);
     });
   });
